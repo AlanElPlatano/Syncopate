@@ -1,19 +1,26 @@
 import { useApp } from '../../context/AppContext';
+import { useStats } from '../../context/StatsContext';
 import './TrainingScreen.css';
 
 export const TrainingScreen = () => {
   const { sessionConfig, goToStats } = useApp();
+  const { recordSession } = useStats();
 
   const handleFinishSession = () => {
     // Mock session results - will be replaced with actual training logic
     const mockResults = {
       mode: sessionConfig!.mode,
       correctAnswers: 8,
-      totalQuestions: 10,
-      accuracy: 80,
+      totalQuestions: sessionConfig!.numQuestions,
+      accuracy: (8 / sessionConfig!.numQuestions) * 100,
+      timestamp: Date.now(),
     };
 
-    goToStats(mockResults);
+    // Record the session (respects guest mode)
+    recordSession(mockResults, sessionConfig!.guestMode);
+
+    // Navigate to stats screen
+    goToStats();
   };
 
   const getModeTitle = () => {

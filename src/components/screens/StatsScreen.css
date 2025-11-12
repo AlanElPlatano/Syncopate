@@ -72,6 +72,16 @@
   font-size: 0.9rem;
 }
 
+.guest-mode-note {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(236, 72, 153, 0.1);
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  color: var(--accent-color);
+  font-size: 0.95rem;
+}
+
 .stats-actions {
   display: flex;
   justify-content: center;

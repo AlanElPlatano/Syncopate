@@ -9,7 +9,7 @@ interface AppContextType {
   goToMenu: () => void;
   goToConfig: (mode: Mode) => void;
   goToTraining: (config: ModeConfig) => void;
-  goToStats: (sessionResults: SessionResults) => void;
+  goToStats: () => void;
 }
 
 export interface SessionResults {
