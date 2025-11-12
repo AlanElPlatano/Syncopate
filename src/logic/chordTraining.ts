@@ -20,8 +20,8 @@ export function generateChordQuestion(
   const randomIndex = Math.floor(Math.random() * selectedChordTypes.length);
   const chordType = selectedChordTypes[randomIndex] as keyof typeof CHORD_TYPES;
 
-  // Generate a random root note (octave 3-5 for good playback range)
-  const rootNote = getRandomNote(3, 5);
+  // Generate a random root note (octave 3-4 for good playback range)
+  const rootNote = getRandomNote(3, 4);
 
   // Get the chord notes
   const chordNotes = getChordNotes(rootNote, chordType);
