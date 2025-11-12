@@ -1,6 +1,7 @@
 {
   "name": "eargym",
   "private": true,
+  "homepage": "https://alanelplatano.github.io/Syncopate/",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
