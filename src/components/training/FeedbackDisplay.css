@@ -1,0 +1,86 @@
+.feedback-display {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  animation: feedbackSlideIn 0.3s ease-out;
+}
+
+@keyframes feedbackSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feedback-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.feedback-icon {
+  font-size: 2rem;
+}
+
+.feedback-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.feedback-answer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feedback-answer-label {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.feedback-answer-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Correct feedback */
+.feedback-correct {
+  background: rgba(16, 185, 129, 0.15);
+  border: 2px solid var(--success-color);
+}
+
+.feedback-correct .feedback-icon,
+.feedback-correct .feedback-text {
+  color: var(--success-color);
+}
+
+/* Incorrect feedback */
+.feedback-incorrect {
+  background: rgba(239, 68, 68, 0.15);
+  border: 2px solid var(--error-color);
+}
+
+.feedback-incorrect .feedback-icon,
+.feedback-incorrect .feedback-text {
+  color: var(--error-color);
+}
+
+/* Gave up feedback */
+.feedback-gave-up {
+  background: rgba(236, 72, 153, 0.15);
+  border: 2px solid var(--accent-color);
+}
+
+.feedback-gave-up .feedback-icon,
+.feedback-gave-up .feedback-text {
+  color: var(--accent-color);
+}

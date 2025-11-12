@@ -1,0 +1,30 @@
+.instrument-selector {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.instrument-toggle {
+  min-width: 180px;
+}
+
+.instrument-icon {
+  font-size: 1.2em;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.instrument-icon.active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.instrument-divider {
+  margin: 0 0.5rem;
+  color: var(--text-secondary);
+}
+
+.instrument-label {
+  margin-left: 0.75rem;
+  font-weight: 600;
+}

@@ -1,0 +1,51 @@
+.question-counter {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.counter-text {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.counter-current {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.counter-divider {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.counter-total {
+  font-weight: 600;
+}
+
+.counter-mode {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.counter-progress-bar {
+  width: 100%;
+  max-width: 400px;
+  height: 6px;
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.counter-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
