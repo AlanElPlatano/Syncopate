@@ -14,11 +14,15 @@
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .app-header p {
   font-size: 1.2rem;
-  opacity: 0.8;
+  color: var(--text-secondary);
 }
 
 .app-main {
@@ -33,6 +37,7 @@
 .menu-screen h2 {
   font-size: 2rem;
   margin-bottom: 2rem;
+  color: var(--text-primary);
 }
 
 .mode-buttons {
@@ -47,11 +52,18 @@
   max-width: 400px;
   padding: 1.5rem 2rem;
   font-size: 1.2rem;
-  border-radius: 12px;
+  border-radius: 16px;
   transition: all 0.3s ease;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .mode-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(139, 92, 246, 0.5);
+  border-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
 }
