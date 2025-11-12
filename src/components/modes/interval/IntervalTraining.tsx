@@ -1,32 +1,44 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { useStats } from '../../../context/StatsContext';
-import { ChordTypeConfig } from '../../../types/screens';
+import { IntervalConfig } from '../../../types/screens';
 import { SessionStats } from '../../../types/stats';
-import { generateChordQuestion, ChordQuestion as ChordQuestionType } from '../../../logic/chordTraining';
-import { ChordQuestion } from './ChordQuestion';
+import { generateIntervalQuestion, IntervalQuestion as IntervalQuestionType } from '../../../logic/intervalTraining';
+import { IntervalQuestion } from './IntervalQuestion';
 import { QuestionCounter } from '../../training/QuestionCounter';
 import { Card } from '../../common/Card';
-import './ChordTraining.css';
+import './IntervalTraining.css';
 
-interface ChordTrainingProps {
-  config: ChordTypeConfig;
+interface IntervalTrainingProps {
+  config: IntervalConfig;
 }
 
-export const ChordTraining = ({ config }: ChordTrainingProps) => {
+export const IntervalTraining = ({ config }: IntervalTrainingProps) => {
   const { goToStats } = useApp();
   const { recordSession } = useStats();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [questions, setQuestions] = useState<ChordQuestionType[]>([]);
+  const [questions, setQuestions] = useState<IntervalQuestionType[]>([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   // Generate all questions on mount
   useEffect(() => {
-    const generatedQuestions: ChordQuestionType[] = [];
+    const generatedQuestions: IntervalQuestionType[] = [];
     for (let i = 0; i < config.numQuestions; i++) {
-      generatedQuestions.push(generateChordQuestion(config.selectedChordTypes));
+      try {
+        generatedQuestions.push(
+          generateIntervalQuestion(
+            config.selectedIntervals,
+            config.direction,
+            config.harmonicMode,
+            config.compoundIntervals,
+            config.octaveRange
+          )
+        );
+      } catch (error) {
+        console.error('Error generating interval question:', error);
+      }
     }
     setQuestions(generatedQuestions);
     setIsLoading(false);
@@ -57,7 +69,7 @@ export const ChordTraining = ({ config }: ChordTrainingProps) => {
     const accuracy = Math.round((correctAnswers / questions.length) * 100);
 
     const sessionStats: SessionStats = {
-      mode: 'chord',
+      mode: 'interval',
       correctAnswers,
       totalQuestions: questions.length,
       accuracy,
@@ -70,7 +82,7 @@ export const ChordTraining = ({ config }: ChordTrainingProps) => {
 
   if (isLoading || questions.length === 0) {
     return (
-      <div className="chord-training">
+      <div className="interval-training">
         <Card>
           <div className="training-loading">
             <p>Generating questions...</p>
@@ -83,17 +95,17 @@ export const ChordTraining = ({ config }: ChordTrainingProps) => {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div className="chord-training">
+    <div className="interval-training">
       <QuestionCounter
         current={currentQuestionIndex + 1}
         total={questions.length}
-        mode="Chord Type Training"
+        mode="Interval Training"
       />
 
       <Card>
-        <ChordQuestion
+        <IntervalQuestion
           question={currentQuestion}
-          selectedChordTypes={config.selectedChordTypes}
+          selectedIntervals={config.selectedIntervals}
           onAnswer={handleAnswer}
           onGiveUp={handleGiveUp}
           onNext={handleNext}

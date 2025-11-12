@@ -1,6 +1,7 @@
 import { useApp } from '../../context/AppContext';
 import { ChordTraining } from '../modes/chord';
-import { ChordTypeConfig } from '../../types/screens';
+import { IntervalTraining } from '../modes/interval';
+import { ChordTypeConfig, IntervalConfig } from '../../types/screens';
 import './TrainingScreen.css';
 
 export const TrainingScreen = () => {
@@ -20,7 +21,7 @@ export const TrainingScreen = () => {
       case 'chord':
         return <ChordTraining config={sessionConfig as ChordTypeConfig} />;
       case 'interval':
-        return <div className="training-placeholder">Interval training coming soon...</div>;
+        return <IntervalTraining config={sessionConfig as IntervalConfig} />;
       case 'progression':
         return <div className="training-placeholder">Progression training coming soon...</div>;
       default:

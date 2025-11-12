@@ -1,0 +1,22 @@
+.interval-training {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.training-loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+}
+
+.training-loading p {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .interval-training {
+    padding: 1rem;
+  }
+}

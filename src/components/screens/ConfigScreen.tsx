@@ -1,5 +1,6 @@
 import { useApp } from '../../context/AppContext';
 import { ChordConfig } from '../modes/chord';
+import { IntervalConfig } from '../modes/interval';
 import './ConfigScreen.css';
 
 export const ConfigScreen = () => {
@@ -11,7 +12,7 @@ export const ConfigScreen = () => {
       case 'chord':
         return <ChordConfig />;
       case 'interval':
-        return <div className="config-placeholder">Interval config coming soon...</div>;
+        return <IntervalConfig />;
       case 'progression':
         return <div className="config-placeholder">Progression config coming soon...</div>;
       default:

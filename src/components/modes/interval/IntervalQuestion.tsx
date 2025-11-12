@@ -1,29 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useAudio } from '../../../context/AudioContext';
-import { ChordQuestion as ChordQuestionType } from '../../../logic/chordTraining';
+import { IntervalQuestion as IntervalQuestionType } from '../../../logic/intervalTraining';
 import { QuestionControls } from '../../training/QuestionControls';
 import { InstrumentSelector } from '../../training/InstrumentSelector';
 import { FeedbackDisplay, FeedbackType } from '../../training/FeedbackDisplay';
 import { Button } from '../../common/Button';
-import './ChordQuestion.css';
+import './IntervalQuestion.css';
 
-interface ChordQuestionProps {
-  question: ChordQuestionType;
-  selectedChordTypes: string[];
+interface IntervalQuestionProps {
+  question: IntervalQuestionType;
+  selectedIntervals: string[];
   onAnswer: (answer: string, isCorrect: boolean) => void;
   onGiveUp: () => void;
   onNext: () => void;
   disabled?: boolean;
 }
 
-export const ChordQuestion = ({
+export const IntervalQuestion = ({
   question,
-  selectedChordTypes,
+  selectedIntervals,
   onAnswer,
   onGiveUp,
   onNext,
   disabled = false,
-}: ChordQuestionProps) => {
+}: IntervalQuestionProps) => {
   const { audioEngine, isInitialized } = useAudio();
   const [feedback, setFeedback] = useState<FeedbackType>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -32,18 +32,22 @@ export const ChordQuestion = ({
   // Auto-play when question loads
   useEffect(() => {
     if (isInitialized && audioEngine) {
-      playChord();
+      playInterval();
     }
   }, [question, isInitialized]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const playChord = async () => {
+  const playInterval = async () => {
     if (!audioEngine || isPlaying) return;
 
     setIsPlaying(true);
     try {
-      await audioEngine.playChord(question.chordNotes);
+      await audioEngine.playInterval(
+        question.note1,
+        question.note2,
+        question.direction
+      );
     } catch (error) {
-      console.error('Error playing chord:', error);
+      console.error('Error playing interval:', error);
     } finally {
       setIsPlaying(false);
     }
@@ -52,7 +56,7 @@ export const ChordQuestion = ({
   const handleAnswerClick = (selectedAnswer: string) => {
     if (answered || disabled) return;
 
-    const isCorrect = selectedAnswer === question.chordType;
+    const isCorrect = selectedAnswer === question.intervalName;
     setAnswered(true);
     setFeedback(isCorrect ? 'correct' : 'incorrect');
     onAnswer(selectedAnswer, isCorrect);
@@ -73,43 +77,43 @@ export const ChordQuestion = ({
   };
 
   return (
-    <div className="chord-question">
+    <div className="interval-question">
       <div className="question-header">
         <InstrumentSelector disabled={isPlaying || disabled} />
       </div>
 
       <div className="question-content">
         <div className="question-prompt">
-          <h2>What chord type do you hear?</h2>
+          <h2>What interval do you hear?</h2>
           <p className="question-instruction">
-            Listen carefully and select the chord type below
+            Listen carefully and identify the interval between the two notes
           </p>
         </div>
 
         <QuestionControls
-          onReplay={playChord}
+          onReplay={playInterval}
           onGiveUp={handleGiveUp}
           isPlaying={isPlaying}
           disabled={disabled || answered}
         />
 
         <div className="answer-options">
-          {selectedChordTypes.map((chordType) => {
-            const isSelected = answered && chordType === question.chordType;
-            const isWrong = answered && feedback === 'incorrect' && chordType !== question.chordType;
+          {selectedIntervals.map((interval) => {
+            const isSelected = answered && interval === question.intervalName;
+            const isWrong = answered && feedback === 'incorrect' && interval !== question.intervalName;
 
             return (
               <Button
-                key={chordType}
+                key={interval}
                 variant={isSelected ? 'primary' : 'secondary'}
                 size="large"
-                onClick={() => handleAnswerClick(chordType)}
+                onClick={() => handleAnswerClick(interval)}
                 disabled={answered || disabled}
                 className={`answer-button ${isSelected ? 'correct-answer' : ''} ${
                   isWrong ? 'fade-out' : ''
                 }`}
               >
-                {chordType}
+                {interval}
               </Button>
             );
           })}
@@ -117,7 +121,7 @@ export const ChordQuestion = ({
 
         <FeedbackDisplay
           feedback={feedback}
-          correctAnswer={question.chordType}
+          correctAnswer={question.intervalName}
           showAnswer={feedback === 'incorrect' || feedback === 'gave-up'}
         />
 

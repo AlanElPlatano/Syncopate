@@ -21,6 +21,19 @@ export const INTERVALS = {
   'Minor 7th': 10,
   'Major 7th': 11,
   'Octave': 12,
+  // Compound intervals (beyond one octave)
+  'Minor 9th': 13,
+  'Major 9th': 14,
+  'Minor 10th': 15,
+  'Major 10th': 16,
+  'Perfect 11th': 17,
+  'Augmented 11th': 18,
+  'Perfect 12th': 19,
+  'Minor 13th': 20,
+  'Major 13th': 21,
+  'Minor 14th': 22,
+  'Major 14th': 23,
+  'Double Octave': 24,
 } as const;
 
 export const CHORD_TYPES = {
