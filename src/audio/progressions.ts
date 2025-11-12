@@ -1,6 +1,6 @@
 // Roman numeral and chord progression utilities
 
-import { transposeNote, NOTE_NAMES } from './theory';
+import { transposeNote } from './theory';
 
 export type RomanNumeral =
   | 'I' | 'ii' | 'iii' | 'IV' | 'V' | 'vi' | 'vii°'  // Major key diatonic
