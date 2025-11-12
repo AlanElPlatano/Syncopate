@@ -13,7 +13,7 @@ function AppContent() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>EarGym</h1>
+        <h1>Syncopate</h1>
         <p>Musical Ear Training</p>
       </header>
 
