@@ -1,0 +1,170 @@
+.progression-config {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.config-header {
+  margin-bottom: 2rem;
+}
+
+.config-header h1 {
+  margin-bottom: 0.5rem;
+}
+
+.config-description {
+  color: #888;
+  line-height: 1.5;
+}
+
+.config-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.config-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.config-label {
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.help-text {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #888;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 2px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radio-option:hover {
+  border-color: #555;
+  background-color: #1a1a1a;
+}
+
+.radio-option input[type="radio"] {
+  margin-top: 0.2rem;
+  cursor: pointer;
+}
+
+.radio-option input[type="radio"]:checked + span {
+  color: #4a9eff;
+}
+
+.radio-option span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.toggle-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 2px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-option:hover {
+  border-color: #555;
+  background-color: #1a1a1a;
+}
+
+.toggle-option.checked {
+  border-color: #4a9eff;
+  background-color: rgba(74, 158, 255, 0.1);
+}
+
+.toggle-option input[type="checkbox"] {
+  margin-top: 0.2rem;
+  cursor: pointer;
+}
+
+.toggle-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.toggle-label {
+  font-weight: 600;
+}
+
+.toggle-description {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.key-selector {
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 2px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.key-selector:hover {
+  border-color: #555;
+}
+
+.key-selector:focus {
+  outline: none;
+  border-color: #4a9eff;
+}
+
+.key-selector option {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.key-selector optgroup {
+  font-weight: 600;
+  color: #aaa;
+}
+
+.config-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .progression-config {
+    padding: 1rem;
+  }
+
+  .config-actions {
+    flex-direction: column;
+  }
+}

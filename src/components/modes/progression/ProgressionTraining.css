@@ -1,0 +1,19 @@
+.progression-training {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.training-loading {
+  padding: 3rem;
+  text-align: center;
+  color: #888;
+}
+
+@media (max-width: 768px) {
+  .progression-training {
+    padding: 1rem 0.5rem;
+  }
+}
