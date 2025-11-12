@@ -1,56 +1,27 @@
 import { useApp } from '../../context/AppContext';
+import { ChordConfig } from '../modes/chord';
 import './ConfigScreen.css';
 
 export const ConfigScreen = () => {
-  const { currentMode, goToMenu, goToTraining } = useApp();
+  const { currentMode } = useApp();
 
-  const handleStartTraining = () => {
-    // Temporary mock config - will be replaced with actual form data
-    const mockConfig = {
-      mode: currentMode!,
-      numQuestions: 10,
-      guestMode: false,
-      selectedChordTypes: ['Major', 'Minor'],
-    } as any;
-
-    goToTraining(mockConfig);
-  };
-
-  const getModeTitle = () => {
+  // Render mode-specific configuration component
+  const renderModeConfig = () => {
     switch (currentMode) {
       case 'chord':
-        return 'Chord Type Training';
+        return <ChordConfig />;
       case 'interval':
-        return 'Interval Training';
+        return <div className="config-placeholder">Interval config coming soon...</div>;
       case 'progression':
-        return 'Chord Progression Training';
+        return <div className="config-placeholder">Progression config coming soon...</div>;
       default:
-        return 'Configuration';
+        return <div className="config-placeholder">Unknown mode</div>;
     }
   };
 
   return (
     <div className="config-screen">
-      <h2>{getModeTitle()}</h2>
-      <p className="config-subtitle">Configure your training session</p>
-
-      <div className="config-content">
-        <p className="placeholder-text">
-          Configuration options will be implemented in Phase 2
-        </p>
-        <p className="placeholder-details">
-          This screen will include checkboxes, selectors, and session options
-        </p>
-      </div>
-
-      <div className="config-actions">
-        <button className="secondary-button" onClick={goToMenu}>
-          Back to Menu
-        </button>
-        <button className="primary-button" onClick={handleStartTraining}>
-          Start Training
-        </button>
-      </div>
+      {renderModeConfig()}
     </div>
   );
 };

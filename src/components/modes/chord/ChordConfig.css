@@ -1,0 +1,63 @@
+.chord-config {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.config-header {
+  text-align: center;
+}
+
+.config-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.config-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.config-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.config-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+}
+
+.config-actions button {
+  min-width: 180px;
+}
+
+@media (max-width: 768px) {
+  .chord-config {
+    padding: 1rem;
+  }
+
+  .config-header h1 {
+    font-size: 2rem;
+  }
+
+  .config-actions {
+    flex-direction: column-reverse;
+  }
+
+  .config-actions button {
+    width: 100%;
+  }
+}
