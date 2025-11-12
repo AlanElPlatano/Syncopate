@@ -1,0 +1,57 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.app-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.app-header p {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.app-main {
+  width: 100%;
+  max-width: 800px;
+}
+
+.menu-screen {
+  text-align: center;
+}
+
+.menu-screen h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.mode-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.mode-button {
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.mode-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
