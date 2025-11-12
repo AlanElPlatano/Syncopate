@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { AppProvider, useApp } from './context/AppContext'
+import { MenuScreen } from './components/screens/MenuScreen'
+import { ConfigScreen } from './components/screens/ConfigScreen'
+import { TrainingScreen } from './components/screens/TrainingScreen'
+import { StatsScreen } from './components/screens/StatsScreen'
 import './App.css'
 
-type Screen = 'menu' | 'config' | 'training' | 'stats'
-
-function App() {
-  const [currentScreen] = useState<Screen>('menu')
+function AppContent() {
+  const { currentScreen } = useApp()
 
   return (
     <div className="app">
@@ -14,18 +16,20 @@ function App() {
       </header>
 
       <main className="app-main">
-        {currentScreen === 'menu' && (
-          <div className="menu-screen">
-            <h2>Training Modes</h2>
-            <div className="mode-buttons">
-              <button className="mode-button">Chord Type Training</button>
-              <button className="mode-button">Interval Training</button>
-              <button className="mode-button">Chord Progression Training</button>
-            </div>
-          </div>
-        )}
+        {currentScreen === 'menu' && <MenuScreen />}
+        {currentScreen === 'config' && <ConfigScreen />}
+        {currentScreen === 'training' && <TrainingScreen />}
+        {currentScreen === 'stats' && <StatsScreen />}
       </main>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
   )
 }
 
