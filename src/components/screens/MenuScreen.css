@@ -4,8 +4,48 @@
 
 .menu-screen h2 {
   font-size: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   color: var(--text-primary);
+}
+
+.audio-test-section {
+  background: rgba(99, 102, 241, 0.1);
+  border: 2px solid rgba(99, 102, 241, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.test-label {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.test-controls {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.test-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  background: rgba(99, 102, 241, 0.2);
+  border: 2px solid var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.test-button:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
+}
+
+.test-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .mode-buttons {

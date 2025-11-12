@@ -1,4 +1,5 @@
 import { AppProvider, useApp } from './context/AppContext'
+import { AudioProvider } from './context/AudioContext'
 import { MenuScreen } from './components/screens/MenuScreen'
 import { ConfigScreen } from './components/screens/ConfigScreen'
 import { TrainingScreen } from './components/screens/TrainingScreen'
@@ -28,7 +29,9 @@ function AppContent() {
 function App() {
   return (
     <AppProvider>
-      <AppContent />
+      <AudioProvider>
+        <AppContent />
+      </AudioProvider>
     </AppProvider>
   )
 }
