@@ -34,7 +34,7 @@ export const MenuScreen = () => {
       {/* Audio test controls */}
       <div className="audio-test-section">
         <p className="test-label">
-          Audio: {isInitialized ? '✓ Ready' : '⚠ Click any button to start'}
+          Audio: {isInitialized ? '✓ Ready' : '⚠ Test your audio'}
         </p>
         <div className="test-controls">
           <button className="test-button" onClick={handleTestAudio}>
