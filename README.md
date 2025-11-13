@@ -1,4 +1,4 @@
-# EarGym
+# Syncopate
 
 A web-based musical ear training application with multiple training modes to help you develop your musical hearing skills. Built with React, TypeScript, and Tone.js.
 
@@ -33,7 +33,7 @@ A web-based musical ear training application with multiple training modes to hel
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/AlanElPlatano/EarGym.git
+git clone https://github.com/AlanElPlatano/Syncopate.git
 cd eargym
 ```
 
@@ -59,13 +59,6 @@ npm run build
 To preview the production build:
 ```bash
 npm run preview
-```
-
-### Deploy to GitHub Pages
-
-To deploy the application to GitHub Pages:
-```bash
-npm run deploy
 ```
 
 ## Usage
