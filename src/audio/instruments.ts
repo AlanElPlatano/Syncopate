@@ -5,7 +5,7 @@ export type InstrumentType = 'piano' | 'guitar';
 export interface Instrument {
   playNote(note: string, duration?: string): void;
   playChord(notes: string[], duration?: string): void;
-  dispose(): void;
+  dispose(): Promise<void>;
 }
 
 export class PianoInstrument implements Instrument {
@@ -34,7 +34,18 @@ export class PianoInstrument implements Instrument {
     this.synth.triggerAttackRelease(notes, duration);
   }
 
-  dispose(): void {
+  async dispose(): Promise<void> {
+    // Gracefully release all active notes
+    this.synth.releaseAll();
+
+    // Ramp down volume to prevent clicks
+    this.synth.volume.rampTo(-60, 0.1);
+
+    // Wait for release envelope to complete (release time is 1.2s)
+    // Adding extra 100ms for volume ramp
+    await new Promise(resolve => setTimeout(resolve, 1300));
+
+    // Now safely dispose
     this.synth.dispose();
   }
 }
@@ -81,7 +92,18 @@ export class GuitarInstrument implements Instrument {
     });
   }
 
-  dispose(): void {
+  async dispose(): Promise<void> {
+    // Gracefully release all active notes
+    this.synth.releaseAll();
+
+    // Ramp down volume to prevent clicks
+    this.synth.volume.rampTo(-60, 0.1);
+
+    // Wait for release envelope to complete (release time is 0.8s)
+    // Adding extra 100ms for volume ramp
+    await new Promise(resolve => setTimeout(resolve, 900));
+
+    // Now safely dispose
     this.synth.dispose();
   }
 }

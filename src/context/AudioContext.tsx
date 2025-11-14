@@ -7,8 +7,8 @@ interface AudioContextType {
   currentInstrument: InstrumentType;
   isInitialized: boolean;
   initializeAudio: () => Promise<void>;
-  setInstrument: (instrument: InstrumentType) => void;
-  toggleInstrument: () => void;
+  setInstrument: (instrument: InstrumentType) => Promise<void>;
+  toggleInstrument: () => Promise<void>;
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
@@ -53,16 +53,16 @@ export const AudioProvider = ({ children }: AudioProviderProps) => {
     }
   };
 
-  const setInstrument = (instrument: InstrumentType) => {
+  const setInstrument = async (instrument: InstrumentType) => {
     if (!audioEngineRef.current) return;
 
-    audioEngineRef.current.setInstrument(instrument);
+    await audioEngineRef.current.setInstrument(instrument);
     setCurrentInstrument(instrument);
   };
 
-  const toggleInstrument = () => {
+  const toggleInstrument = async () => {
     const newInstrument: InstrumentType = currentInstrument === 'piano' ? 'guitar' : 'piano';
-    setInstrument(newInstrument);
+    await setInstrument(newInstrument);
   };
 
   const value: AudioContextType = {

@@ -28,10 +28,10 @@ export class AudioEngine {
     return this.initialized;
   }
 
-  setInstrument(type: InstrumentType): void {
+  async setInstrument(type: InstrumentType): Promise<void> {
     if (type === this.instrumentType) return;
 
-    this.currentInstrument.dispose();
+    await this.currentInstrument.dispose();
     this.instrumentType = type;
     this.currentInstrument = createInstrument(type);
   }
@@ -102,7 +102,7 @@ export class AudioEngine {
     Tone.Transport.bpm.value = oldBpm;
   }
 
-  dispose(): void {
-    this.currentInstrument.dispose();
+  async dispose(): Promise<void> {
+    await this.currentInstrument.dispose();
   }
 }
