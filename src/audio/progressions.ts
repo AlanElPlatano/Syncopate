@@ -180,8 +180,8 @@ export function getAllChords(key: string): RomanNumeralChord[] {
  * Get random key (with optional major/minor preference)
  */
 export function getRandomKey(includeMinor = true): string {
-  const majorKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-  const minorKeys = ['Cm', 'Dm', 'Em', 'Fm', 'Gm', 'Am', 'Bm'];
+  const majorKeys = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+  const minorKeys = ['Cm', 'C#m', 'Dm', 'Ebm', 'Em', 'Fm', 'F#m', 'Gm', 'G#m', 'Am', 'Bbm', 'Bm'];
 
   const allKeys = includeMinor ? [...majorKeys, ...minorKeys] : majorKeys;
   return allKeys[Math.floor(Math.random() * allKeys.length)];
@@ -192,7 +192,7 @@ export function getRandomKey(includeMinor = true): string {
  */
 export function getAvailableKeys(): string[] {
   return [
-    'C', 'D', 'E', 'F', 'G', 'A', 'B',
-    'Cm', 'Dm', 'Em', 'Fm', 'Gm', 'Am', 'Bm',
+    'C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B',
+    'Cm', 'C#m', 'Dm', 'Ebm', 'Em', 'Fm', 'F#m', 'Gm', 'G#m', 'Am', 'Bbm', 'Bm',
   ];
 }

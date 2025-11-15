@@ -53,12 +53,23 @@ export function midiToNoteName(midi: number): string {
 }
 
 export function noteNameToMidi(noteName: string): number {
-  const match = noteName.match(/^([A-G]#?)(-?\d+)$/);
+  const match = noteName.match(/^([A-G][#b]?)(-?\d+)$/);
   if (!match) throw new Error(`Invalid note name: ${noteName}`);
 
   const [, note, octaveStr] = match;
   const octave = parseInt(octaveStr);
-  const noteIndex = NOTE_NAMES.indexOf(note);
+
+  // Convert flats to sharps for lookup
+  const enharmonicMap: Record<string, string> = {
+    'Db': 'C#',
+    'Eb': 'D#',
+    'Gb': 'F#',
+    'Ab': 'G#',
+    'Bb': 'A#',
+  };
+
+  const normalizedNote = enharmonicMap[note] || note;
+  const noteIndex = NOTE_NAMES.indexOf(normalizedNote);
 
   if (noteIndex === -1) throw new Error(`Invalid note: ${note}`);
 
