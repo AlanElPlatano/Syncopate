@@ -131,7 +131,8 @@ export const ProgressionQuestion = ({
           onReplay={playProgression}
           onGiveUp={handleGiveUp}
           isPlaying={isPlaying}
-          disabled={disabled || answered}
+          disabled={disabled}
+          disableGiveUp={answered}
         />
 
         <div className="user-progression">

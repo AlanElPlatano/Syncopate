@@ -90,7 +90,8 @@ export const ChordQuestion = ({
           onReplay={playChord}
           onGiveUp={handleGiveUp}
           isPlaying={isPlaying}
-          disabled={disabled || answered}
+          disabled={disabled}
+          disableGiveUp={answered}
         />
 
         <div className="answer-options">

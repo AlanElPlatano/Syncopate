@@ -6,6 +6,7 @@ interface QuestionControlsProps {
   onGiveUp: () => void;
   isPlaying?: boolean;
   disabled?: boolean;
+  disableGiveUp?: boolean;
 }
 
 export const QuestionControls = ({
@@ -13,6 +14,7 @@ export const QuestionControls = ({
   onGiveUp,
   isPlaying = false,
   disabled = false,
+  disableGiveUp = false,
 }: QuestionControlsProps) => {
   return (
     <div className="question-controls">
@@ -27,7 +29,7 @@ export const QuestionControls = ({
       <Button
         variant="danger"
         onClick={onGiveUp}
-        disabled={disabled}
+        disabled={disabled || disableGiveUp}
         className="give-up-button"
       >
         🏳️ I Give Up
