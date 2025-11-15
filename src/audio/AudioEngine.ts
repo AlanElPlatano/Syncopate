@@ -40,20 +40,20 @@ export class AudioEngine {
     return this.instrumentType;
   }
 
-  playNote(note: string, duration = '1n'): void {
+  playNote(note: string, duration = '1n', startTime?: number): void {
     if (!this.initialized) {
       console.warn('Audio engine not initialized. Call initialize() first.');
       return;
     }
-    this.currentInstrument.playNote(note, duration);
+    this.currentInstrument.playNote(note, duration, startTime);
   }
 
-  playChord(notes: string[], duration = '1n'): void {
+  playChord(notes: string[], duration = '1n', startTime?: number): void {
     if (!this.initialized) {
       console.warn('Audio engine not initialized. Call initialize() first.');
       return;
     }
-    this.currentInstrument.playChord(notes, duration);
+    this.currentInstrument.playChord(notes, duration, startTime);
   }
 
   async playInterval(
@@ -71,11 +71,14 @@ export class AudioEngine {
       this.currentInstrument.playChord([note1, note2], duration);
     } else {
       const [first, second] = direction === 'ascending' ? [note1, note2] : [note2, note1];
-      this.currentInstrument.playNote(first, duration);
+      const now = Tone.now();
+      const durationSeconds = Tone.Time(duration).toSeconds();
 
-      // Wait for first note before playing second
-      await new Promise(resolve => setTimeout(resolve, Tone.Time(duration).toMilliseconds()));
-      this.currentInstrument.playNote(second, duration);
+      this.currentInstrument.playNote(first, duration, now);
+      this.currentInstrument.playNote(second, duration, now + durationSeconds);
+
+      // Wait for both notes to finish before resolving
+      await new Promise(resolve => setTimeout(resolve, durationSeconds * 2 * 1000));
     }
   }
 
@@ -92,12 +95,17 @@ export class AudioEngine {
     const oldBpm = Tone.Transport.bpm.value;
     Tone.Transport.bpm.value = bpm;
 
-    for (const chord of chords) {
-      this.currentInstrument.playChord(chord, noteDuration);
-      await new Promise(resolve =>
-        setTimeout(resolve, Tone.Time(noteDuration).toMilliseconds())
-      );
-    }
+    const now = Tone.now();
+    const durationSeconds = Tone.Time(noteDuration).toSeconds();
+
+    chords.forEach((chord, index) => {
+      this.currentInstrument.playChord(chord, noteDuration, now + (index * durationSeconds));
+    });
+
+    // Wait for all chords to finish
+    await new Promise(resolve =>
+      setTimeout(resolve, chords.length * durationSeconds * 1000)
+    );
 
     Tone.Transport.bpm.value = oldBpm;
   }

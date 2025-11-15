@@ -3,8 +3,8 @@ import * as Tone from 'tone';
 export type InstrumentType = 'piano' | 'guitar';
 
 export interface Instrument {
-  playNote(note: string, duration?: string): void;
-  playChord(notes: string[], duration?: string): void;
+  playNote(note: string, duration?: string, startTime?: number): void;
+  playChord(notes: string[], duration?: string, startTime?: number): void;
   dispose(): Promise<void>;
 }
 
@@ -26,12 +26,12 @@ export class PianoInstrument implements Instrument {
     }).toDestination();
   }
 
-  playNote(note: string, duration = '1n'): void {
-    this.synth.triggerAttackRelease(note, duration);
+  playNote(note: string, duration = '1n', startTime?: number): void {
+    this.synth.triggerAttackRelease(note, duration, startTime);
   }
 
-  playChord(notes: string[], duration = '1n'): void {
-    this.synth.triggerAttackRelease(notes, duration);
+  playChord(notes: string[], duration = '1n', startTime?: number): void {
+    this.synth.triggerAttackRelease(notes, duration, startTime);
   }
 
   async dispose(): Promise<void> {
@@ -80,15 +80,16 @@ export class GuitarInstrument implements Instrument {
     }).toDestination();
   }
 
-  playNote(note: string, duration = '1n'): void {
-    this.synth.triggerAttackRelease(note, duration);
+  playNote(note: string, duration = '1n', startTime?: number): void {
+    this.synth.triggerAttackRelease(note, duration, startTime);
   }
 
-  playChord(notes: string[], duration = '1n'): void {
+  playChord(notes: string[], duration = '1n', startTime?: number): void {
     // For guitar, play notes slightly staggered for more realistic strum
     const strumDelay = 0.02; // 20ms between notes
     notes.forEach((note, index) => {
-      this.synth.triggerAttackRelease(note, duration, `+${index * strumDelay}`);
+      const time = startTime !== undefined ? startTime + (index * strumDelay) : `+${index * strumDelay}`;
+      this.synth.triggerAttackRelease(note, duration, time);
     });
   }
 
