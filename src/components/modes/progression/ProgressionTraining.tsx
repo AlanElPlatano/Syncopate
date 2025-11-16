@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { useStats } from '../../../context/StatsContext';
 import { ProgressionConfig } from '../../../types/screens';
-import { SessionStats } from '../../../types/stats';
+import { ProgressionAnswerRecord, DetailedSessionStats } from '../../../types/stats';
 import {
   generateProgressionQuestion,
   ProgressionQuestion as ProgressionQuestionType,
@@ -10,6 +10,7 @@ import {
 import { ProgressionQuestion } from './ProgressionQuestion';
 import { QuestionCounter } from '../../training/QuestionCounter';
 import { Card } from '../../common/Card';
+import { generateSessionId } from '../../../utils/storage';
 import './ProgressionTraining.css';
 
 interface ProgressionTrainingProps {
@@ -18,12 +19,14 @@ interface ProgressionTrainingProps {
 
 export const ProgressionTraining = ({ config }: ProgressionTrainingProps) => {
   const { goToStats } = useApp();
-  const { recordSession } = useStats();
+  const { recordDetailedSession } = useStats();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState<ProgressionQuestionType[]>([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [answerRecords, setAnswerRecords] = useState<ProgressionAnswerRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sessionStartTime] = useState(() => Date.now()); // Capture start time on mount
 
   // Generate all questions on mount
   useEffect(() => {
@@ -37,14 +40,46 @@ export const ProgressionTraining = ({ config }: ProgressionTrainingProps) => {
     setIsLoading(false);
   }, [config]);
 
-  const handleAnswer = (_answer: string[], isCorrect: boolean) => {
+  const handleAnswer = (answer: string[], isCorrect: boolean) => {
     if (isCorrect) {
       setCorrectAnswers((prev) => prev + 1);
     }
+
+    // Record detailed answer data
+    const currentQuestion = questions[currentQuestionIndex];
+    const correctAnswer = currentQuestion.progression.map(chord => chord.numeral);
+    const answerRecord: ProgressionAnswerRecord = {
+      questionIndex: currentQuestionIndex,
+      timestamp: Date.now(),
+      isCorrect,
+      correctAnswer,
+      userAnswer: answer,
+      key: currentQuestion.key,
+      progressionLength: currentQuestion.progression.length,
+      bpm: currentQuestion.bpm,
+      difficulty: config.difficulty,
+    };
+
+    setAnswerRecords((prev) => [...prev, answerRecord]);
   };
 
   const handleGiveUp = () => {
-    // Give up doesn't count as correct
+    // Give up doesn't count as correct, but we record it as an incorrect answer
+    const currentQuestion = questions[currentQuestionIndex];
+    const correctAnswer = currentQuestion.progression.map(chord => chord.numeral);
+    const answerRecord: ProgressionAnswerRecord = {
+      questionIndex: currentQuestionIndex,
+      timestamp: Date.now(),
+      isCorrect: false,
+      correctAnswer,
+      userAnswer: [], // Empty array indicates gave up
+      key: currentQuestion.key,
+      progressionLength: currentQuestion.progression.length,
+      bpm: currentQuestion.bpm,
+      difficulty: config.difficulty,
+    };
+
+    setAnswerRecords((prev) => [...prev, answerRecord]);
   };
 
   const handleNext = () => {
@@ -60,16 +95,30 @@ export const ProgressionTraining = ({ config }: ProgressionTrainingProps) => {
 
   const finishSession = () => {
     const accuracy = Math.round((correctAnswers / questions.length) * 100);
+    const sessionEndTime = Date.now();
+    const duration = sessionEndTime - sessionStartTime;
 
-    const sessionStats: SessionStats = {
+    const sessionStats: DetailedSessionStats = {
+      sessionId: generateSessionId(),
       mode: 'progression',
       correctAnswers,
       totalQuestions: questions.length,
       accuracy,
-      timestamp: Date.now(),
+      timestamp: sessionEndTime,
+      sessionStartTime,
+      sessionEndTime,
+      duration,
+      answers: answerRecords,
+      config: {
+        guestMode: config.guestMode,
+        numQuestions: config.numQuestions,
+        difficulty: config.difficulty,
+        chordPool: config.chordPool,
+        key: config.key,
+      },
     };
 
-    recordSession(sessionStats, config.guestMode);
+    recordDetailedSession(sessionStats, config.guestMode);
     goToStats();
   };
 

@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { useStats } from '../../../context/StatsContext';
 import { ChordTypeConfig } from '../../../types/screens';
-import { SessionStats } from '../../../types/stats';
+import { ChordAnswerRecord, DetailedSessionStats } from '../../../types/stats';
 import { generateChordQuestion, ChordQuestion as ChordQuestionType } from '../../../logic/chordTraining';
 import { ChordQuestion } from './ChordQuestion';
 import { QuestionCounter } from '../../training/QuestionCounter';
 import { Card } from '../../common/Card';
+import { generateSessionId } from '../../../utils/storage';
 import './ChordTraining.css';
 
 interface ChordTrainingProps {
@@ -15,12 +16,14 @@ interface ChordTrainingProps {
 
 export const ChordTraining = ({ config }: ChordTrainingProps) => {
   const { goToStats } = useApp();
-  const { recordSession } = useStats();
+  const { recordDetailedSession } = useStats();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState<ChordQuestionType[]>([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [answerRecords, setAnswerRecords] = useState<ChordAnswerRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sessionStartTime] = useState(() => Date.now()); // Capture start time on mount
 
   // Generate all questions on mount
   useEffect(() => {
@@ -32,14 +35,40 @@ export const ChordTraining = ({ config }: ChordTrainingProps) => {
     setIsLoading(false);
   }, [config]);
 
-  const handleAnswer = (_answer: string, isCorrect: boolean) => {
+  const handleAnswer = (answer: string, isCorrect: boolean) => {
     if (isCorrect) {
       setCorrectAnswers((prev) => prev + 1);
     }
+
+    // Record detailed answer data
+    const currentQuestion = questions[currentQuestionIndex];
+    const answerRecord: ChordAnswerRecord = {
+      questionIndex: currentQuestionIndex,
+      timestamp: Date.now(),
+      isCorrect,
+      correctAnswer: currentQuestion.chordType,
+      userAnswer: answer,
+      rootNote: currentQuestion.rootNote,
+      chordType: currentQuestion.chordType,
+    };
+
+    setAnswerRecords((prev) => [...prev, answerRecord]);
   };
 
   const handleGiveUp = () => {
-    // Give up doesn't count as correct, but we don't do anything special
+    // Give up doesn't count as correct, but we record it as an incorrect answer
+    const currentQuestion = questions[currentQuestionIndex];
+    const answerRecord: ChordAnswerRecord = {
+      questionIndex: currentQuestionIndex,
+      timestamp: Date.now(),
+      isCorrect: false,
+      correctAnswer: currentQuestion.chordType,
+      userAnswer: '', // Empty string indicates gave up
+      rootNote: currentQuestion.rootNote,
+      chordType: currentQuestion.chordType,
+    };
+
+    setAnswerRecords((prev) => [...prev, answerRecord]);
   };
 
   const handleNext = () => {
@@ -55,16 +84,28 @@ export const ChordTraining = ({ config }: ChordTrainingProps) => {
 
   const finishSession = () => {
     const accuracy = Math.round((correctAnswers / questions.length) * 100);
+    const sessionEndTime = Date.now();
+    const duration = sessionEndTime - sessionStartTime;
 
-    const sessionStats: SessionStats = {
+    const sessionStats: DetailedSessionStats = {
+      sessionId: generateSessionId(),
       mode: 'chord',
       correctAnswers,
       totalQuestions: questions.length,
       accuracy,
-      timestamp: Date.now(),
+      timestamp: sessionEndTime,
+      sessionStartTime,
+      sessionEndTime,
+      duration,
+      answers: answerRecords,
+      config: {
+        guestMode: config.guestMode,
+        numQuestions: config.numQuestions,
+        selectedChordTypes: config.selectedChordTypes,
+      },
     };
 
-    recordSession(sessionStats, config.guestMode);
+    recordDetailedSession(sessionStats, config.guestMode);
     goToStats();
   };
 
