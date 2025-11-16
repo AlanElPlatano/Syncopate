@@ -11,6 +11,7 @@ interface AppContextType {
   goToConfig: (mode: Mode) => void;
   goToTraining: (config: ModeConfig) => void;
   goToStats: () => void;
+  goToDashboard: () => void;
 }
 
 export interface SessionResults {
@@ -84,6 +85,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setDevInsightsEnabled(false);
   };
 
+  const goToDashboard = () => {
+    setCurrentScreen('dashboard');
+    // Reset dev insights when viewing dashboard
+    setDevInsightsEnabled(false);
+  };
+
   const value: AppContextType = {
     currentScreen,
     currentMode,
@@ -93,6 +100,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     goToConfig,
     goToTraining,
     goToStats,
+    goToDashboard,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

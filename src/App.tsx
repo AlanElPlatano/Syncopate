@@ -5,6 +5,7 @@ import { MenuScreen } from './components/screens/MenuScreen'
 import { ConfigScreen } from './components/screens/ConfigScreen'
 import { TrainingScreen } from './components/screens/TrainingScreen'
 import { StatsScreen } from './components/screens/StatsScreen'
+import { DashboardScreen } from './components/screens/DashboardScreen'
 import './App.css'
 
 function AppContent() {
@@ -22,6 +23,7 @@ function AppContent() {
         {currentScreen === 'config' && <ConfigScreen />}
         {currentScreen === 'training' && <TrainingScreen />}
         {currentScreen === 'stats' && <StatsScreen />}
+        {currentScreen === 'dashboard' && <DashboardScreen />}
       </main>
     </div>
   )

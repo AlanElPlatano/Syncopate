@@ -4,7 +4,7 @@ import { getChordNotes } from '../../audio/theory';
 import './MenuScreen.css';
 
 export const MenuScreen = () => {
-  const { goToConfig } = useApp();
+  const { goToConfig, goToDashboard } = useApp();
   const { audioEngine, currentInstrument, isInitialized, initializeAudio, toggleInstrument } = useAudio();
 
   const handleModeClick = async (mode: 'chord' | 'interval' | 'progression') => {
@@ -57,6 +57,15 @@ export const MenuScreen = () => {
           Chord Progression Training
         </button>
       </div>
+
+      {/* Floating Stats Button */}
+      <button className="floating-stats-button" onClick={goToDashboard} title="View Statistics Dashboard">
+        <div className="chart-icon">
+          <span className="bar bar-1"></span>
+          <span className="bar bar-2"></span>
+          <span className="bar bar-3"></span>
+        </div>
+      </button>
     </div>
   );
 };

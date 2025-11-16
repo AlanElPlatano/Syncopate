@@ -1,4 +1,4 @@
-export type Screen = 'menu' | 'config' | 'training' | 'stats';
+export type Screen = 'menu' | 'config' | 'training' | 'stats' | 'dashboard';
 
 export type Mode = 'chord' | 'interval' | 'progression';
 
