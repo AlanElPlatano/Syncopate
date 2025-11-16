@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAudio } from '../../../context/AudioContext';
+import { useApp } from '../../../context/AppContext';
 import { ChordQuestion as ChordQuestionType } from '../../../logic/chordTraining';
 import { QuestionControls } from '../../training/QuestionControls';
 import { InstrumentSelector } from '../../training/InstrumentSelector';
@@ -25,6 +26,7 @@ export const ChordQuestion = ({
   disabled = false,
 }: ChordQuestionProps) => {
   const { audioEngine, isInitialized } = useAudio();
+  const { devInsightsEnabled } = useApp();
   const [feedback, setFeedback] = useState<FeedbackType>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [answered, setAnswered] = useState(false);
@@ -98,6 +100,9 @@ export const ChordQuestion = ({
           {selectedChordTypes.map((chordType) => {
             const isSelected = answered && chordType === question.chordType;
             const isWrong = answered && feedback === 'incorrect' && chordType !== question.chordType;
+            const isCorrectAnswer = chordType === question.chordType;
+            // Visual aid for UI debugging
+            const showDevHint = devInsightsEnabled && !answered && isCorrectAnswer;
 
             return (
               <Button
@@ -108,7 +113,7 @@ export const ChordQuestion = ({
                 disabled={answered || disabled}
                 className={`answer-button ${isSelected ? 'correct-answer' : ''} ${
                   isWrong ? 'fade-out' : ''
-                }`}
+                } ${showDevHint ? 'dev-insights-hint' : ''}`}
               >
                 {chordType}
               </Button>
