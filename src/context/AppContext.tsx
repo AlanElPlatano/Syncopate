@@ -44,8 +44,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   // Keyboard shortcut for toggling dev insights
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      // Toggle on 'h' key press
-      if (event.key === 'h' || event.key === 'H') {
+      // Toggle on 'z' key press
+      if (event.key === 'z' || event.key === 'Z') {
         // Prevent toggle if user is typing in an input field
         const target = event.target as HTMLElement;
         if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
