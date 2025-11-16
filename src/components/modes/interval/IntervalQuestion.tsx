@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAudio } from '../../../context/AudioContext';
+import { useApp } from '../../../context/AppContext';
 import { IntervalQuestion as IntervalQuestionType } from '../../../logic/intervalTraining';
 import { QuestionControls } from '../../training/QuestionControls';
 import { InstrumentSelector } from '../../training/InstrumentSelector';
@@ -25,6 +26,7 @@ export const IntervalQuestion = ({
   disabled = false,
 }: IntervalQuestionProps) => {
   const { audioEngine, isInitialized } = useAudio();
+  const { devInsightsEnabled } = useApp();
   const [feedback, setFeedback] = useState<FeedbackType>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [answered, setAnswered] = useState(false);
@@ -102,6 +104,9 @@ export const IntervalQuestion = ({
           {selectedIntervals.map((interval) => {
             const isSelected = answered && interval === question.intervalName;
             const isWrong = answered && feedback === 'incorrect' && interval !== question.intervalName;
+            const isCorrectAnswer = interval === question.intervalName;
+            // Visual aid for UI debugging
+            const showDevHint = devInsightsEnabled && !answered && isCorrectAnswer;
 
             return (
               <Button
@@ -112,7 +117,7 @@ export const IntervalQuestion = ({
                 disabled={answered || disabled}
                 className={`answer-button ${isSelected ? 'correct-answer' : ''} ${
                   isWrong ? 'fade-out' : ''
-                }`}
+                } ${showDevHint ? 'dev-insights-hint' : ''}`}
               >
                 {interval}
               </Button>

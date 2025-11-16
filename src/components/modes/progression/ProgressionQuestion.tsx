@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAudio } from '../../../context/AudioContext';
+import { useApp } from '../../../context/AppContext';
 import { ProgressionQuestion as ProgressionQuestionType } from '../../../logic/progressionTraining';
 import { getDiatonicChords, getNonDiatonicChords, parseKey } from '../../../audio/progressions';
 import { QuestionControls } from '../../training/QuestionControls';
@@ -26,6 +27,7 @@ export const ProgressionQuestion = ({
   disabled = false,
 }: ProgressionQuestionProps) => {
   const { audioEngine, isInitialized } = useAudio();
+  const { devInsightsEnabled } = useApp();
   const [feedback, setFeedback] = useState<FeedbackType>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [answered, setAnswered] = useState(false);
@@ -177,18 +179,27 @@ export const ProgressionQuestion = ({
 
         <div className="numeral-options">
           <div className="numeral-grid">
-            {availableNumerals.map((chord) => (
-              <Button
-                key={chord.numeral}
-                variant="secondary"
-                size="medium"
-                onClick={() => handleAddChord(chord.numeral)}
-                disabled={answered || disabled || userProgression.length >= question.progression.length}
-                className="numeral-button"
-              >
-                {chord.label}
-              </Button>
-            ))}
+            {availableNumerals.map((chord) => {
+              // Sequential reveal: highlight only the next correct chord
+              const nextCorrectIndex = userProgression.length;
+              const nextCorrectChord = question.progression[nextCorrectIndex];
+              const isNextCorrect = !answered && nextCorrectChord && chord.numeral === nextCorrectChord.numeral;
+              // Visual aid for UI debugging - shows the next chord in sequence
+              const showDevHint = devInsightsEnabled && isNextCorrect;
+
+              return (
+                <Button
+                  key={chord.numeral}
+                  variant="secondary"
+                  size="medium"
+                  onClick={() => handleAddChord(chord.numeral)}
+                  disabled={answered || disabled || userProgression.length >= question.progression.length}
+                  className={`numeral-button ${showDevHint ? 'dev-insights-hint' : ''}`}
+                >
+                  {chord.label}
+                </Button>
+              );
+            })}
           </div>
         </div>
 

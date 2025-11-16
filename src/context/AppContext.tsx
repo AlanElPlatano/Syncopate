@@ -1,10 +1,11 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Screen, Mode, ModeConfig } from '../types/screens';
 
 interface AppContextType {
   currentScreen: Screen;
   currentMode: Mode | null;
   sessionConfig: ModeConfig | null;
+  devInsightsEnabled: boolean;
 
   goToMenu: () => void;
   goToConfig: (mode: Mode) => void;
@@ -37,11 +38,34 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [currentScreen, setCurrentScreen] = useState<Screen>('menu');
   const [currentMode, setCurrentMode] = useState<Mode | null>(null);
   const [sessionConfig, setSessionConfig] = useState<ModeConfig | null>(null);
+  // Developer insights mode for UI debugging and visual assistance
+  const [devInsightsEnabled, setDevInsightsEnabled] = useState(false);
+
+  // Keyboard shortcut for toggling dev insights
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Toggle on 'h' key press
+      if (event.key === 'h' || event.key === 'H') {
+        // Prevent toggle if user is typing in an input field
+        const target = event.target as HTMLElement;
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+          return;
+        }
+
+        setDevInsightsEnabled((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   const goToMenu = () => {
     setCurrentScreen('menu');
     setCurrentMode(null);
     setSessionConfig(null);
+    // Reset dev insights when returning to menu
+    setDevInsightsEnabled(false);
   };
 
   const goToConfig = (mode: Mode) => {
@@ -56,12 +80,15 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   const goToStats = () => {
     setCurrentScreen('stats');
+    // Reset dev insights when viewing stats
+    setDevInsightsEnabled(false);
   };
 
   const value: AppContextType = {
     currentScreen,
     currentMode,
     sessionConfig,
+    devInsightsEnabled,
     goToMenu,
     goToConfig,
     goToTraining,
