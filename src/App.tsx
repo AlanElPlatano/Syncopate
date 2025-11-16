@@ -9,12 +9,25 @@ import { DashboardScreen } from './components/screens/DashboardScreen'
 import './App.css'
 
 function AppContent() {
-  const { currentScreen } = useApp()
+  const { currentScreen, goToMenu } = useApp()
 
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Syncopate</h1>
+        <h1
+          className="app-title"
+          onClick={goToMenu}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              goToMenu()
+            }
+          }}
+        >
+          Syncopate
+        </h1>
         <p>Musical Ear Training</p>
       </header>
 
