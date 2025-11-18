@@ -91,3 +91,120 @@ button:focus-visible {
   background: rgba(99, 102, 241, 0.06);
   box-shadow: inset 0 0 40px rgba(99, 102, 241, 0.06);
 }
+
+/* ========================================
+   ACCESSIBILITY FEATURES
+   ======================================== */
+
+/* High Contrast Mode */
+.app.high-contrast {
+  --primary-color: #818cf8;
+  --primary-hover: #6366f1;
+  --secondary-color: #a78bfa;
+  --accent-color: #f472b6;
+  --success-color: #34d399;
+  --error-color: #f87171;
+
+  --bg-dark: #000000;
+  --bg-card: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #e5e5e5;
+
+  background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+}
+
+.app.high-contrast body {
+  background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+}
+
+.app.high-contrast button {
+  border: 2px solid currentColor;
+}
+
+.app.high-contrast button:focus,
+.app.high-contrast button:focus-visible {
+  outline: 4px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+/* Font Size Scaling */
+.app.font-size-small {
+  font-size: 14px;
+}
+
+.app.font-size-small h1 {
+  font-size: 2rem;
+}
+
+.app.font-size-small h2 {
+  font-size: 1.5rem;
+}
+
+.app.font-size-small h3 {
+  font-size: 1.25rem;
+}
+
+.app.font-size-small button {
+  font-size: 0.9em;
+  padding: 0.5em 1em;
+}
+
+/* Medium is the default, no changes needed */
+.app.font-size-medium {
+  font-size: 16px;
+}
+
+.app.font-size-large {
+  font-size: 18px;
+}
+
+.app.font-size-large h1 {
+  font-size: 3rem;
+}
+
+.app.font-size-large h2 {
+  font-size: 2.25rem;
+}
+
+.app.font-size-large h3 {
+  font-size: 1.75rem;
+}
+
+.app.font-size-large button {
+  font-size: 1.1em;
+  padding: 0.7em 1.4em;
+}
+
+.app.font-size-extra-large {
+  font-size: 20px;
+}
+
+.app.font-size-extra-large h1 {
+  font-size: 3.5rem;
+}
+
+.app.font-size-extra-large h2 {
+  font-size: 2.75rem;
+}
+
+.app.font-size-extra-large h3 {
+  font-size: 2rem;
+}
+
+.app.font-size-extra-large button {
+  font-size: 1.2em;
+  padding: 0.8em 1.6em;
+}
+
+/* Enhanced Focus Indicators for All Modes */
+.app *:focus-visible {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.app.high-contrast *:focus-visible {
+  outline: 4px solid var(--accent-color);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(244, 114, 182, 0.2);
+}

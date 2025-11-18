@@ -1,17 +1,26 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Screen, Mode, ModeConfig } from '../types/screens';
 
+export type FontSize = 'small' | 'medium' | 'large' | 'extra-large';
+
 interface AppContextType {
   currentScreen: Screen;
   currentMode: Mode | null;
   sessionConfig: ModeConfig | null;
   devInsightsEnabled: boolean;
 
+  // Accessibility features
+  highContrastMode: boolean;
+  fontSize: FontSize;
+  toggleHighContrast: () => void;
+  setFontSize: (size: FontSize) => void;
+
   goToMenu: () => void;
   goToConfig: (mode: Mode) => void;
   goToTraining: (config: ModeConfig) => void;
   goToStats: () => void;
   goToDashboard: () => void;
+  goToAccessibility: () => void;
 }
 
 export interface SessionResults {
@@ -41,6 +50,34 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [sessionConfig, setSessionConfig] = useState<ModeConfig | null>(null);
   // Developer insights mode for UI debugging and visual assistance
   const [devInsightsEnabled, setDevInsightsEnabled] = useState(false);
+
+  // Accessibility settings (persisted to localStorage)
+  const [highContrastMode, setHighContrastMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem('accessibility_highContrast');
+    return saved === 'true';
+  });
+
+  const [fontSize, setFontSizeState] = useState<FontSize>(() => {
+    const saved = localStorage.getItem('accessibility_fontSize');
+    return (saved as FontSize) || 'medium';
+  });
+
+  // Persist accessibility settings
+  useEffect(() => {
+    localStorage.setItem('accessibility_highContrast', String(highContrastMode));
+  }, [highContrastMode]);
+
+  useEffect(() => {
+    localStorage.setItem('accessibility_fontSize', fontSize);
+  }, [fontSize]);
+
+  const toggleHighContrast = () => {
+    setHighContrastMode((prev) => !prev);
+  };
+
+  const setFontSize = (size: FontSize) => {
+    setFontSizeState(size);
+  };
 
   // Keyboard shortcut for toggling dev insights
   useEffect(() => {
@@ -91,16 +128,27 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setDevInsightsEnabled(false);
   };
 
+  const goToAccessibility = () => {
+    setCurrentScreen('accessibility');
+    // Reset dev insights when viewing accessibility settings
+    setDevInsightsEnabled(false);
+  };
+
   const value: AppContextType = {
     currentScreen,
     currentMode,
     sessionConfig,
     devInsightsEnabled,
+    highContrastMode,
+    fontSize,
+    toggleHighContrast,
+    setFontSize,
     goToMenu,
     goToConfig,
     goToTraining,
     goToStats,
     goToDashboard,
+    goToAccessibility,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

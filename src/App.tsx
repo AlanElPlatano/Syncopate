@@ -6,13 +6,16 @@ import { ConfigScreen } from './components/screens/ConfigScreen'
 import { TrainingScreen } from './components/screens/TrainingScreen'
 import { StatsScreen } from './components/screens/StatsScreen'
 import { DashboardScreen } from './components/screens/DashboardScreen'
+import { AccessibilityScreen } from './components/screens/AccessibilityScreen'
 import './App.css'
 
 function AppContent() {
-  const { currentScreen, goToMenu } = useApp()
+  const { currentScreen, goToMenu, highContrastMode, fontSize } = useApp()
 
   return (
-    <div className="app">
+    <div
+      className={`app ${highContrastMode ? 'high-contrast' : ''} font-size-${fontSize}`}
+    >
       <header className="app-header">
         <h1
           className="app-title"
@@ -25,6 +28,7 @@ function AppContent() {
               goToMenu()
             }
           }}
+          aria-label="Syncopate - Return to main menu"
         >
           Syncopate
         </h1>
@@ -37,6 +41,7 @@ function AppContent() {
         {currentScreen === 'training' && <TrainingScreen />}
         {currentScreen === 'stats' && <StatsScreen />}
         {currentScreen === 'dashboard' && <DashboardScreen />}
+        {currentScreen === 'accessibility' && <AccessibilityScreen />}
       </main>
     </div>
   )
