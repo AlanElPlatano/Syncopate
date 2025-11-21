@@ -34,7 +34,7 @@ A web-based musical ear training application with multiple training modes to hel
 1. Clone the repository:
 ```bash
 git clone https://github.com/AlanElPlatano/Syncopate.git
-cd eargym
+cd syncopate
 ```
 
 2. Install dependencies:
@@ -171,7 +171,7 @@ Train your ear to recognize common chord progressions in various keys. The appli
 
 ## Browser Compatibility
 
-EarGym works best on modern browsers with Web Audio API support like:
+Syncopate works best on modern browsers with Web Audio API support like:
 - Chrome/Edge (recommended)
 - Firefox
 - Safari

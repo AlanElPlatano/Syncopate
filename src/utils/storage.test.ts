@@ -59,7 +59,7 @@ describe('storage.ts - LocalStorage Operations', () => {
         sessionHistory: {},
       };
 
-      localStorage.setItem('eargym_detailed_stats', JSON.stringify(testStats));
+      localStorage.setItem('syncopate_detailed_stats', JSON.stringify(testStats));
 
       const loaded = loadDetailedLifetimeStats();
 
@@ -119,7 +119,7 @@ describe('storage.ts - LocalStorage Operations', () => {
         },
       };
 
-      localStorage.setItem('eargym_lifetime_stats', JSON.stringify(oldStats));
+      localStorage.setItem('syncopate_lifetime_stats', JSON.stringify(oldStats));
 
       const loaded = loadDetailedLifetimeStats();
 
@@ -149,7 +149,7 @@ describe('storage.ts - LocalStorage Operations', () => {
 
       saveDetailedLifetimeStats(testStats);
 
-      const saved = localStorage.getItem('eargym_detailed_stats');
+      const saved = localStorage.getItem('syncopate_detailed_stats');
       expect(saved).toBeTruthy();
 
       const parsed = JSON.parse(saved!);
@@ -202,7 +202,7 @@ describe('storage.ts - LocalStorage Operations', () => {
 
       saveDetailedLifetimeStats(testStats);
 
-      const saved = localStorage.getItem('eargym_detailed_stats');
+      const saved = localStorage.getItem('syncopate_detailed_stats');
       const parsed = JSON.parse(saved!);
 
       // Should have pruned to 200 sessions
@@ -222,12 +222,12 @@ describe('storage.ts - LocalStorage Operations', () => {
         sessionHistory: {},
       };
 
-      localStorage.setItem('eargym_detailed_stats', JSON.stringify(testStats));
-      expect(localStorage.getItem('eargym_detailed_stats')).toBeTruthy();
+      localStorage.setItem('syncopate_detailed_stats', JSON.stringify(testStats));
+      expect(localStorage.getItem('syncopate_detailed_stats')).toBeTruthy();
 
       clearDetailedLifetimeStats();
 
-      expect(localStorage.getItem('eargym_detailed_stats')).toBeNull();
+      expect(localStorage.getItem('syncopate_detailed_stats')).toBeNull();
     });
   });
 

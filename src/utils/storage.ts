@@ -13,8 +13,8 @@ import {
 import { Mode } from '../types/screens';
 import { updateDetailedLifetimeStats } from './analytics';
 
-const STORAGE_KEY = 'eargym_lifetime_stats';
-const DETAILED_STORAGE_KEY = 'eargym_detailed_stats';
+const STORAGE_KEY = 'syncopate_lifetime_stats';
+const DETAILED_STORAGE_KEY = 'syncopate_detailed_stats';
 const MAX_SESSIONS_IN_HISTORY = 200; // Limit to prevent localStorage overflow
 
 export function loadLifetimeStats(): LifetimeStats {

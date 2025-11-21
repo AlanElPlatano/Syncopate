@@ -88,6 +88,6 @@ button:focus-visible {
 
 /* Developer insights - visual aid for UI debugging */
 .dev-insights-hint {
-  background: rgba(99, 102, 241, 0.06);
-  box-shadow: inset 0 0 40px rgba(99, 102, 241, 0.06);
+  background: rgba(99, 102, 241, 0.05);
+  box-shadow: inset 0 0 40px rgba(99, 102, 241, 0.05);
 }
