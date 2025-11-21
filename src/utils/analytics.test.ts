@@ -15,7 +15,6 @@ import {
   DetailedProgressionStats,
   ChordAnswerRecord,
   IntervalAnswerRecord,
-  ProgressionAnswerRecord,
   DEFAULT_DETAILED_CHORD_STATS,
   DEFAULT_DETAILED_INTERVAL_STATS,
   DEFAULT_DETAILED_PROGRESSION_STATS,
@@ -32,15 +31,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         overallAccuracy: 80,
       };
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-1',
         mode: 'chord',
         correctAnswers: 8,
         totalQuestions: 10,
         accuracy: 80,
-        timestamp: Date.now(),
+        timestamp,
         answers: [],
         config: { guestMode: false, numQuestions: 10 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateChordStats(currentStats, session);
@@ -56,15 +59,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         ...DEFAULT_DETAILED_CHORD_STATS,
       };
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-1',
         mode: 'chord',
         correctAnswers: 7,
         totalQuestions: 10,
         accuracy: 70,
-        timestamp: Date.now(),
+        timestamp,
         answers: [],
         config: { guestMode: false, numQuestions: 10 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateChordStats(currentStats, session);
@@ -108,15 +115,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         },
       ];
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-1',
         mode: 'chord',
         correctAnswers: 2,
         totalQuestions: 3,
         accuracy: 67,
-        timestamp: Date.now(),
+        timestamp,
         answers,
         config: { guestMode: false, numQuestions: 3 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateChordStats(currentStats, session);
@@ -149,6 +160,9 @@ describe('analytics.ts - Analytics Calculations', () => {
         timestamp: 2000,
         answers: [],
         config: { guestMode: false, numQuestions: 10 },
+        sessionStartTime: 1000,
+        sessionEndTime: 2000,
+        duration: 1000,
       };
 
       const updated = updateChordStats(currentStats, session);
@@ -162,15 +176,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         recentSessions: ['session-1', 'session-2'],
       };
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-3',
         mode: 'chord',
         correctAnswers: 5,
         totalQuestions: 10,
         accuracy: 50,
-        timestamp: Date.now(),
+        timestamp,
         answers: [],
         config: { guestMode: false, numQuestions: 10 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateChordStats(currentStats, session);
@@ -183,15 +201,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         ...DEFAULT_DETAILED_CHORD_STATS,
       };
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-1',
         mode: 'chord',
         correctAnswers: 0,
         totalQuestions: 0,
         accuracy: 0,
-        timestamp: Date.now(),
+        timestamp,
         answers: [],
         config: { guestMode: false, numQuestions: 0 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateChordStats(currentStats, session);
@@ -210,15 +232,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         overallAccuracy: 80,
       };
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-1',
         mode: 'interval',
         correctAnswers: 6,
         totalQuestions: 10,
         accuracy: 60,
-        timestamp: Date.now(),
+        timestamp,
         answers: [],
         config: { guestMode: false, numQuestions: 10 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateIntervalStats(currentStats, session);
@@ -260,15 +286,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         },
       ];
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-1',
         mode: 'interval',
         correctAnswers: 1,
         totalQuestions: 2,
         accuracy: 50,
-        timestamp: Date.now(),
+        timestamp,
         answers,
         config: { guestMode: false, numQuestions: 2 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateIntervalStats(currentStats, session);
@@ -327,15 +357,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         },
       ];
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-1',
         mode: 'interval',
         correctAnswers: 2,
         totalQuestions: 3,
         accuracy: 67,
-        timestamp: Date.now(),
+        timestamp,
         answers,
         config: { guestMode: false, numQuestions: 3 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateIntervalStats(currentStats, session);
@@ -364,15 +398,19 @@ describe('analytics.ts - Analytics Calculations', () => {
         overallAccuracy: 75,
       };
 
+      const timestamp = Date.now();
       const session: DetailedSessionStats = {
         sessionId: 'session-1',
         mode: 'progression',
         correctAnswers: 5,
         totalQuestions: 10,
         accuracy: 50,
-        timestamp: Date.now(),
+        timestamp,
         answers: [],
         config: { guestMode: false, numQuestions: 10 },
+        sessionStartTime: timestamp - 60000,
+        sessionEndTime: timestamp,
+        duration: 60000,
       };
 
       const updated = updateProgressionStats(currentStats, session);
@@ -387,6 +425,7 @@ describe('analytics.ts - Analytics Calculations', () => {
   describe('getOverallSummary', () => {
     it('should calculate overall summary correctly', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: {
           ...DEFAULT_DETAILED_CHORD_STATS,
           totalSessions: 5,
@@ -436,6 +475,7 @@ describe('analytics.ts - Analytics Calculations', () => {
 
     it('should handle zero questions gracefully', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
@@ -452,6 +492,7 @@ describe('analytics.ts - Analytics Calculations', () => {
 
     it('should calculate accuracy with mixed results', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: {
           ...DEFAULT_DETAILED_CHORD_STATS,
           totalQuestions: 10,
@@ -481,6 +522,7 @@ describe('analytics.ts - Analytics Calculations', () => {
   describe('getTotalTrainingTime', () => {
     it('should calculate total training time correctly', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
@@ -494,6 +536,8 @@ describe('analytics.ts - Analytics Calculations', () => {
             timestamp: Date.now(),
             answers: [],
             config: { guestMode: false, numQuestions: 10 },
+            sessionStartTime: Date.now() - 60000,
+            sessionEndTime: Date.now(),
             duration: 60000, // 1 minute
           },
           'session-2': {
@@ -505,6 +549,8 @@ describe('analytics.ts - Analytics Calculations', () => {
             timestamp: Date.now(),
             answers: [],
             config: { guestMode: false, numQuestions: 10 },
+            sessionStartTime: Date.now() - 120000,
+            sessionEndTime: Date.now(),
             duration: 120000, // 2 minutes
           },
         },
@@ -521,6 +567,7 @@ describe('analytics.ts - Analytics Calculations', () => {
 
     it('should format time with hours correctly', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
@@ -534,6 +581,8 @@ describe('analytics.ts - Analytics Calculations', () => {
             timestamp: Date.now(),
             answers: [],
             config: { guestMode: false, numQuestions: 10 },
+            sessionStartTime: Date.now() - 3600000,
+            sessionEndTime: Date.now(),
             duration: 3600000, // 1 hour
           },
           'session-2': {
@@ -545,6 +594,8 @@ describe('analytics.ts - Analytics Calculations', () => {
             timestamp: Date.now(),
             answers: [],
             config: { guestMode: false, numQuestions: 10 },
+            sessionStartTime: Date.now() - 1800000,
+            sessionEndTime: Date.now(),
             duration: 1800000, // 30 minutes
           },
         },
@@ -560,6 +611,7 @@ describe('analytics.ts - Analytics Calculations', () => {
 
     it('should handle zero time', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
@@ -577,6 +629,7 @@ describe('analytics.ts - Analytics Calculations', () => {
 
     it('should handle sessions without duration', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
@@ -604,6 +657,7 @@ describe('analytics.ts - Analytics Calculations', () => {
   describe('getAverageTimePerQuestion', () => {
     it('should calculate average time per question correctly', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: {
           ...DEFAULT_DETAILED_CHORD_STATS,
           totalQuestions: 10,
@@ -626,6 +680,8 @@ describe('analytics.ts - Analytics Calculations', () => {
             timestamp: Date.now(),
             answers: [],
             config: { guestMode: false, numQuestions: 10 },
+            sessionStartTime: Date.now() - 100000,
+            sessionEndTime: Date.now(),
             duration: 100000, // 100 seconds
           },
           'session-2': {
@@ -637,6 +693,8 @@ describe('analytics.ts - Analytics Calculations', () => {
             timestamp: Date.now(),
             answers: [],
             config: { guestMode: false, numQuestions: 10 },
+            sessionStartTime: Date.now() - 100000,
+            sessionEndTime: Date.now(),
             duration: 100000, // 100 seconds
           },
         },
@@ -652,6 +710,7 @@ describe('analytics.ts - Analytics Calculations', () => {
 
     it('should handle zero questions gracefully', () => {
       const stats: DetailedLifetimeStats = {
+        version: 1,
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },

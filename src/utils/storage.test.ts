@@ -39,6 +39,7 @@ describe('storage.ts - LocalStorage Operations', () => {
 
     it('should load saved stats correctly', () => {
       const testStats: DetailedLifetimeStats = {
+        version: 1,
         chord: {
           ...DEFAULT_DETAILED_CHORD_STATS,
           totalSessions: 5,
@@ -131,6 +132,7 @@ describe('storage.ts - LocalStorage Operations', () => {
   describe('saveDetailedLifetimeStats', () => {
     it('should save stats to localStorage correctly', () => {
       const testStats: DetailedLifetimeStats = {
+        version: 1,
         chord: {
           ...DEFAULT_DETAILED_CHORD_STATS,
           totalSessions: 5,
@@ -166,6 +168,7 @@ describe('storage.ts - LocalStorage Operations', () => {
       });
 
       const testStats: DetailedLifetimeStats = {
+        version: 1,
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
@@ -180,6 +183,7 @@ describe('storage.ts - LocalStorage Operations', () => {
 
     it('should limit session history to maximum size', () => {
       const testStats: DetailedLifetimeStats = {
+        version: 1,
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
@@ -188,15 +192,19 @@ describe('storage.ts - LocalStorage Operations', () => {
 
       // Create 250 sessions (more than MAX_SESSIONS_IN_HISTORY which is 200)
       for (let i = 0; i < 250; i++) {
+        const timestamp = Date.now() + i;
         testStats.sessionHistory[`session-${i}`] = {
           sessionId: `session-${i}`,
           mode: 'chord',
           correctAnswers: 5,
           totalQuestions: 10,
           accuracy: 50,
-          timestamp: Date.now() + i, // Different timestamps
+          timestamp, // Different timestamps
           answers: [],
           config: { guestMode: false, numQuestions: 10 },
+          sessionStartTime: timestamp - 60000,
+          sessionEndTime: timestamp,
+          duration: 60000,
         };
       }
 
@@ -213,6 +221,7 @@ describe('storage.ts - LocalStorage Operations', () => {
   describe('clearDetailedLifetimeStats', () => {
     it('should clear stats from localStorage', () => {
       const testStats: DetailedLifetimeStats = {
+        version: 1,
         chord: {
           ...DEFAULT_DETAILED_CHORD_STATS,
           totalSessions: 5,
