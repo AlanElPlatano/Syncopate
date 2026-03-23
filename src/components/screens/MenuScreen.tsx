@@ -1,13 +1,14 @@
 import { useApp } from '../../context/AppContext';
 import { useAudio } from '../../context/AudioContext';
 import { getChordNotes } from '../../audio/theory';
+import { version as APP_VERSION } from '../../../package.json';
 import './MenuScreen.css';
 
 export const MenuScreen = () => {
   const { goToConfig, goToDashboard } = useApp();
   const { audioEngine, currentInstrument, isInitialized, initializeAudio, toggleInstrument } = useAudio();
 
-  const handleModeClick = async (mode: 'chord' | 'interval' | 'progression') => {
+  const handleModeClick = async (mode: 'chord' | 'interval' | 'progression' | 'keyIdentification') => {
     // Initialize audio on first interaction
     if (!isInitialized) {
       await initializeAudio();
@@ -27,8 +28,11 @@ export const MenuScreen = () => {
     }
   };
 
+  const appVersion = `v${APP_VERSION}`;
+
   return (
     <div className="menu-screen">
+      <span className="version-label">{appVersion}</span>
       <h2>Training Modes</h2>
 
       {/* Audio test controls */}
@@ -52,6 +56,9 @@ export const MenuScreen = () => {
         </button>
         <button className="mode-button" onClick={() => handleModeClick('interval')}>
           Interval Training
+        </button>
+        <button className="mode-button" onClick={() => handleModeClick('keyIdentification')}>
+          Key Identification Training
         </button>
         <button className="mode-button" onClick={() => handleModeClick('progression')}>
           Chord Progression Training

@@ -2,6 +2,7 @@ import { useApp } from '../../context/AppContext';
 import { ChordConfig } from '../modes/chord';
 import { IntervalConfig } from '../modes/interval';
 import { ProgressionConfig } from '../modes/progression';
+import { KeyIdentificationConfig } from '../modes/keyIdentification';
 import './ConfigScreen.css';
 
 export const ConfigScreen = () => {
@@ -16,6 +17,8 @@ export const ConfigScreen = () => {
         return <IntervalConfig />;
       case 'progression':
         return <ProgressionConfig />;
+      case 'keyIdentification':
+        return <KeyIdentificationConfig />;
       default:
         return <div className="config-placeholder">Unknown mode</div>;
     }

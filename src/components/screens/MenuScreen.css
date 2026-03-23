@@ -1,5 +1,15 @@
 .menu-screen {
   text-align: center;
+  position: relative;
+}
+
+.version-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  opacity: 0.6;
 }
 
 .menu-screen h2 {

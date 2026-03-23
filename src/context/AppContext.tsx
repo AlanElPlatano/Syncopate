@@ -65,31 +65,42 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setCurrentScreen('menu');
     setCurrentMode(null);
     setSessionConfig(null);
-    // Reset dev insights when returning to menu
     setDevInsightsEnabled(false);
   };
 
   const goToConfig = (mode: Mode) => {
     setCurrentMode(mode);
     setCurrentScreen('config');
+    history.pushState({ screen: 'config' }, '');
   };
 
   const goToTraining = (config: ModeConfig) => {
     setSessionConfig(config);
     setCurrentScreen('training');
+    history.pushState({ screen: 'training' }, '');
   };
 
   const goToStats = () => {
     setCurrentScreen('stats');
-    // Reset dev insights when viewing stats
     setDevInsightsEnabled(false);
+    history.pushState({ screen: 'stats' }, '');
   };
 
   const goToDashboard = () => {
     setCurrentScreen('dashboard');
-    // Reset dev insights when viewing dashboard
     setDevInsightsEnabled(false);
+    history.pushState({ screen: 'dashboard' }, '');
   };
+
+  // Browser back button navigates to menu
+  useEffect(() => {
+    const handlePopState = () => {
+      goToMenu();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const value: AppContextType = {
     currentScreen,

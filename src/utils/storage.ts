@@ -9,6 +9,7 @@ import {
   DEFAULT_DETAILED_CHORD_STATS,
   DEFAULT_DETAILED_INTERVAL_STATS,
   DEFAULT_DETAILED_PROGRESSION_STATS,
+  DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS,
 } from '../types/stats';
 import { Mode } from '../types/screens';
 import { updateDetailedLifetimeStats } from './analytics';
@@ -112,6 +113,13 @@ export function migrateToDetailedStats(oldStats: LifetimeStats): DetailedLifetim
       totalQuestions: oldStats.progression.totalQuestions,
       totalCorrect: oldStats.progression.totalCorrect,
       overallAccuracy: oldStats.progression.overallAccuracy,
+    },
+    keyIdentification: {
+      ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS,
+      totalSessions: oldStats.keyIdentification?.totalSessions ?? 0,
+      totalQuestions: oldStats.keyIdentification?.totalQuestions ?? 0,
+      totalCorrect: oldStats.keyIdentification?.totalCorrect ?? 0,
+      overallAccuracy: oldStats.keyIdentification?.overallAccuracy ?? 0,
     },
     sessionHistory: {},
   };
@@ -256,6 +264,8 @@ export function resetDetailedModeStats(mode: Mode): DetailedLifetimeStats {
     resetStats.interval = { ...DEFAULT_DETAILED_INTERVAL_STATS };
   } else if (mode === 'progression') {
     resetStats.progression = { ...DEFAULT_DETAILED_PROGRESSION_STATS };
+  } else if (mode === 'keyIdentification') {
+    resetStats.keyIdentification = { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS };
   }
 
   return resetStats;

@@ -176,14 +176,28 @@ export function getAllChords(key: string): RomanNumeralChord[] {
   return [...getDiatonicChords(key), ...getNonDiatonicChords(key)];
 }
 
+export const MAJOR_KEYS = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const MINOR_KEYS = ['Cm', 'C#m', 'Dm', 'Ebm', 'Em', 'Fm', 'F#m', 'Gm', 'G#m', 'Am', 'Bbm', 'Bm'];
+
 /**
  * Get random key (with optional major/minor preference)
  */
 export function getRandomKey(includeMinor = true): string {
-  const majorKeys = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
-  const minorKeys = ['Cm', 'C#m', 'Dm', 'Ebm', 'Em', 'Fm', 'F#m', 'Gm', 'G#m', 'Am', 'Bbm', 'Bm'];
+  const allKeys = includeMinor ? [...MAJOR_KEYS, ...MINOR_KEYS] : MAJOR_KEYS;
+  return allKeys[Math.floor(Math.random() * allKeys.length)];
+}
 
-  const allKeys = includeMinor ? [...majorKeys, ...minorKeys] : majorKeys;
+/**
+ * Get random key filtered by mode (major-only, minor-only, or both)
+ */
+export function getRandomKeyByMode(keyMode: 'major' | 'minor' | 'both'): string {
+  if (keyMode === 'major') {
+    return MAJOR_KEYS[Math.floor(Math.random() * MAJOR_KEYS.length)];
+  }
+  if (keyMode === 'minor') {
+    return MINOR_KEYS[Math.floor(Math.random() * MINOR_KEYS.length)];
+  }
+  const allKeys = [...MAJOR_KEYS, ...MINOR_KEYS];
   return allKeys[Math.floor(Math.random() * allKeys.length)];
 }
 
@@ -191,8 +205,10 @@ export function getRandomKey(includeMinor = true): string {
  * Get available keys list for UI
  */
 export function getAvailableKeys(): string[] {
-  return [
-    'C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B',
-    'Cm', 'C#m', 'Dm', 'Ebm', 'Em', 'Fm', 'F#m', 'Gm', 'G#m', 'Am', 'Bbm', 'Bm',
-  ];
+  return [...MAJOR_KEYS, ...MINOR_KEYS];
 }
+
+/**
+ * Root note names used for key identification answer dropdowns
+ */
+export const ROOT_NOTES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];

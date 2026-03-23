@@ -11,8 +11,18 @@ import './App.css'
 function AppContent() {
   const { currentScreen, goToMenu } = useApp()
 
+  const showBackButton = currentScreen !== 'menu' && currentScreen !== 'training';
+
   return (
     <div className="app">
+      {showBackButton && (
+        <button className="back-button" onClick={goToMenu} aria-label="Back to menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+      )}
+
       <header className="app-header">
         <h1
           className="app-title"

@@ -20,12 +20,15 @@ export const PerformanceBreakdown = ({ stats }: PerformanceBreakdownProps) => {
   const worstIntervals = getWorstIntervals(stats.interval.intervalBreakdown, 5);
   const bestKeys = getBestKeys(stats.progression.keyBreakdown, 5);
   const worstKeys = getWorstKeys(stats.progression.keyBreakdown, 5);
+  const bestKeyIdKeys = getBestKeys(stats.keyIdentification.keyBreakdown, 5);
+  const worstKeyIdKeys = getWorstKeys(stats.keyIdentification.keyBreakdown, 5);
 
   const hasChordData = bestChords.length > 0 || worstChords.length > 0;
   const hasIntervalData = bestIntervals.length > 0 || worstIntervals.length > 0;
   const hasKeyData = bestKeys.length > 0 || worstKeys.length > 0;
+  const hasKeyIdData = bestKeyIdKeys.length > 0 || worstKeyIdKeys.length > 0;
 
-  if (!hasChordData && !hasIntervalData && !hasKeyData) {
+  if (!hasChordData && !hasIntervalData && !hasKeyData && !hasKeyIdData) {
     return (
       <div className="performance-breakdown">
         <h3 className="section-title">📈 Performance Insights</h3>
@@ -253,6 +256,85 @@ export const PerformanceBreakdown = ({ stats }: PerformanceBreakdownProps) => {
                 <span className="difficulty-count">
                   {stats.progression.difficultyBreakdown.hard.correct}/
                   {stats.progression.difficultyBreakdown.hard.total}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Key Identification Performance */}
+      {hasKeyIdData && (
+        <div className="breakdown-section">
+          <h4 className="breakdown-title">🔑 Key Identification Performance</h4>
+          <div className="breakdown-grid">
+            {bestKeyIdKeys.length > 0 && (
+              <div className="breakdown-card strengths">
+                <div className="breakdown-header">
+                  <span className="breakdown-icon">💪</span>
+                  <span className="breakdown-label">Your Strengths</span>
+                </div>
+                <div className="breakdown-list">
+                  {bestKeyIdKeys.map(({ key, breakdown }) => (
+                    <div key={key} className="breakdown-item">
+                      <span className="item-name">{key}</span>
+                      <div className="item-stats">
+                        <span className="item-accuracy">{breakdown.accuracy}%</span>
+                        <span className="item-count">
+                          {breakdown.correct}/{breakdown.total}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {worstKeyIdKeys.length > 0 && (
+              <div className="breakdown-card weaknesses">
+                <div className="breakdown-header">
+                  <span className="breakdown-icon">📚</span>
+                  <span className="breakdown-label">Practice These</span>
+                </div>
+                <div className="breakdown-list">
+                  {worstKeyIdKeys.map(({ key, breakdown }) => (
+                    <div key={key} className="breakdown-item">
+                      <span className="item-name">{key}</span>
+                      <div className="item-stats">
+                        <span className="item-accuracy">{breakdown.accuracy}%</span>
+                        <span className="item-count">
+                          {breakdown.correct}/{breakdown.total}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Difficulty Breakdown */}
+          <div className="difficulty-breakdown">
+            <h5 className="difficulty-title">Performance by Difficulty</h5>
+            <div className="difficulty-grid">
+              <div className="difficulty-card">
+                <span className="difficulty-label">😊 Easy</span>
+                <span className="difficulty-accuracy">
+                  {stats.keyIdentification.difficultyBreakdown.easy.accuracy}%
+                </span>
+                <span className="difficulty-count">
+                  {stats.keyIdentification.difficultyBreakdown.easy.correct}/
+                  {stats.keyIdentification.difficultyBreakdown.easy.total}
+                </span>
+              </div>
+              <div className="difficulty-card">
+                <span className="difficulty-label">🔥 Hard</span>
+                <span className="difficulty-accuracy">
+                  {stats.keyIdentification.difficultyBreakdown.hard.accuracy}%
+                </span>
+                <span className="difficulty-count">
+                  {stats.keyIdentification.difficultyBreakdown.hard.correct}/
+                  {stats.keyIdentification.difficultyBreakdown.hard.total}
                 </span>
               </div>
             </div>

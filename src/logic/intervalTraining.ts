@@ -75,7 +75,7 @@ export function generateIntervalQuestion(
     const targetMidi = rootMidi - intervalSemitones;
 
     // Check if target note is within reasonable MIDI range
-    if (targetMidi < 12) {
+    if (targetMidi < 24) {
       // If too low, transpose up an octave
       note1 = midiToNoteName(targetMidi + 12);
     } else {

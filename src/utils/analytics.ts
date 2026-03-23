@@ -4,9 +4,11 @@ import {
   DetailedChordStats,
   DetailedIntervalStats,
   DetailedProgressionStats,
+  DetailedKeyIdentificationStats,
   ChordAnswerRecord,
   IntervalAnswerRecord,
   ProgressionAnswerRecord,
+  KeyIdentificationAnswerRecord,
   CategoryBreakdown,
   ChordTypeBreakdown,
   IntervalBreakdown,
@@ -220,6 +222,52 @@ export function updateProgressionStats(
 }
 
 /**
+ * Update key identification stats with a new session
+ */
+export function updateKeyIdentificationStats(
+  currentStats: DetailedKeyIdentificationStats,
+  session: DetailedSessionStats
+): DetailedKeyIdentificationStats {
+  const updated: DetailedKeyIdentificationStats = {
+    ...currentStats,
+    totalSessions: currentStats.totalSessions + 1,
+    totalQuestions: currentStats.totalQuestions + session.totalQuestions,
+    totalCorrect: currentStats.totalCorrect + session.correctAnswers,
+    overallAccuracy: 0,
+    lastPlayed: session.timestamp,
+    keyBreakdown: { ...currentStats.keyBreakdown },
+    difficultyBreakdown: { ...currentStats.difficultyBreakdown },
+    recentSessions: [...currentStats.recentSessions, session.sessionId],
+  };
+
+  updated.overallAccuracy = updated.totalQuestions > 0
+    ? Math.round((updated.totalCorrect / updated.totalQuestions) * 100)
+    : 0;
+
+  session.answers.forEach(answer => {
+    const kiAnswer = answer as KeyIdentificationAnswerRecord;
+
+    const keyBreakdown = getOrCreateBreakdown(updated.keyBreakdown, kiAnswer.correctAnswer);
+    updated.keyBreakdown[kiAnswer.correctAnswer] = updateCategoryBreakdown(
+      keyBreakdown,
+      kiAnswer.isCorrect
+    );
+
+    const difficultyBreakdown = updated.difficultyBreakdown[kiAnswer.difficulty];
+    updated.difficultyBreakdown[kiAnswer.difficulty] = updateCategoryBreakdown(
+      difficultyBreakdown,
+      kiAnswer.isCorrect
+    );
+  });
+
+  if (updated.recentSessions.length > 100) {
+    updated.recentSessions = updated.recentSessions.slice(-100);
+  }
+
+  return updated;
+}
+
+/**
  * Update detailed lifetime stats with a new session
  */
 export function updateDetailedLifetimeStats(
@@ -241,6 +289,8 @@ export function updateDetailedLifetimeStats(
     updated.interval = updateIntervalStats(currentStats.interval, session);
   } else if (session.mode === 'progression') {
     updated.progression = updateProgressionStats(currentStats.progression, session);
+  } else if (session.mode === 'keyIdentification') {
+    updated.keyIdentification = updateKeyIdentificationStats(currentStats.keyIdentification, session);
   }
 
   // Update session accuracy statistics for the mode
@@ -253,6 +303,8 @@ export function updateDetailedLifetimeStats(
     updated.interval = { ...updated.interval, ...accuracyStats };
   } else if (session.mode === 'progression') {
     updated.progression = { ...updated.progression, ...accuracyStats };
+  } else if (session.mode === 'keyIdentification') {
+    updated.keyIdentification = { ...updated.keyIdentification, ...accuracyStats };
   }
 
   return updated;
@@ -267,7 +319,7 @@ export function updateDetailedLifetimeStats(
  */
 export function getSessionsByMode(
   stats: DetailedLifetimeStats,
-  mode: 'chord' | 'interval' | 'progression'
+  mode: 'chord' | 'interval' | 'progression' | 'keyIdentification'
 ): DetailedSessionStats[] {
   return Object.values(stats.sessionHistory)
     .filter(session => session.mode === mode)
@@ -388,7 +440,7 @@ export function getWorstKeys(
  */
 export function getAccuracyTrend(
   stats: DetailedLifetimeStats,
-  mode: 'chord' | 'interval' | 'progression',
+  mode: 'chord' | 'interval' | 'progression' | 'keyIdentification',
   numberOfSessions: number = 10
 ): Array<{ sessionId: string; timestamp: number; accuracy: number }> {
   return getSessionsByMode(stats, mode)
@@ -437,15 +489,18 @@ export function getKeyStats(
 export function getOverallSummary(stats: DetailedLifetimeStats) {
   const totalSessions = stats.chord.totalSessions +
                         stats.interval.totalSessions +
-                        stats.progression.totalSessions;
+                        stats.progression.totalSessions +
+                        stats.keyIdentification.totalSessions;
 
   const totalQuestions = stats.chord.totalQuestions +
                          stats.interval.totalQuestions +
-                         stats.progression.totalQuestions;
+                         stats.progression.totalQuestions +
+                         stats.keyIdentification.totalQuestions;
 
   const totalCorrect = stats.chord.totalCorrect +
                        stats.interval.totalCorrect +
-                       stats.progression.totalCorrect;
+                       stats.progression.totalCorrect +
+                       stats.keyIdentification.totalCorrect;
 
   const overallAccuracy = totalQuestions > 0
     ? Math.round((totalCorrect / totalQuestions) * 100)
@@ -468,6 +523,10 @@ export function getOverallSummary(stats: DetailedLifetimeStats) {
       progression: {
         sessions: stats.progression.totalSessions,
         accuracy: stats.progression.overallAccuracy,
+      },
+      keyIdentification: {
+        sessions: stats.keyIdentification.totalSessions,
+        accuracy: stats.keyIdentification.overallAccuracy,
       },
     },
   };
@@ -522,7 +581,8 @@ export function getAverageTimePerQuestion(stats: DetailedLifetimeStats): {
 } {
   const totalQuestions = stats.chord.totalQuestions +
                          stats.interval.totalQuestions +
-                         stats.progression.totalQuestions;
+                         stats.progression.totalQuestions +
+                         stats.keyIdentification.totalQuestions;
 
   if (totalQuestions === 0) {
     return { milliseconds: 0, seconds: 0, formatted: '0s' };
@@ -546,11 +606,13 @@ export function getTrainingTimeByMode(stats: DetailedLifetimeStats): {
   chord: { duration: number; formatted: string };
   interval: { duration: number; formatted: string };
   progression: { duration: number; formatted: string };
+  keyIdentification: { duration: number; formatted: string };
 } {
-  const modeTimes = {
+  const modeTimes: Record<string, number> = {
     chord: 0,
     interval: 0,
     progression: 0,
+    keyIdentification: 0,
   };
 
   Object.values(stats.sessionHistory).forEach(session => {
@@ -570,5 +632,6 @@ export function getTrainingTimeByMode(stats: DetailedLifetimeStats): {
     chord: { duration: modeTimes.chord, formatted: formatTime(modeTimes.chord) },
     interval: { duration: modeTimes.interval, formatted: formatTime(modeTimes.interval) },
     progression: { duration: modeTimes.progression, formatted: formatTime(modeTimes.progression) },
+    keyIdentification: { duration: modeTimes.keyIdentification, formatted: formatTime(modeTimes.keyIdentification) },
   };
 }
