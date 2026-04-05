@@ -47,10 +47,26 @@ export interface ProgressionAnswerRecord {
   difficulty: 'easy' | 'hard';
 }
 
+/**
+ * Detailed record of a single answer in key identification training
+ */
+export interface KeyIdentificationAnswerRecord {
+  questionIndex: number;
+  timestamp: number;
+  isCorrect: boolean;
+  correctAnswer: string;
+  userAnswer: string;
+  progression: string[];
+  progressionLength: number;
+  bpm: number;
+  difficulty: 'easy' | 'hard';
+}
+
 export type AnswerRecord =
   | ChordAnswerRecord
   | IntervalAnswerRecord
-  | ProgressionAnswerRecord;
+  | ProgressionAnswerRecord
+  | KeyIdentificationAnswerRecord;
 
 // ============================================================================
 // SESSION STATISTICS
@@ -182,6 +198,14 @@ export interface DetailedProgressionStats extends DetailedModeStats {
   difficultyBreakdown: DifficultyBreakdown;
 }
 
+/**
+ * Enhanced key identification mode stats
+ */
+export interface DetailedKeyIdentificationStats extends DetailedModeStats {
+  keyBreakdown: KeyBreakdown;
+  difficultyBreakdown: DifficultyBreakdown;
+}
+
 // ============================================================================
 // LIFETIME STATISTICS
 // ============================================================================
@@ -193,6 +217,7 @@ export interface LifetimeStats {
   chord: ModeStats;
   interval: ModeStats;
   progression: ModeStats;
+  keyIdentification: ModeStats;
 }
 
 /**
@@ -203,6 +228,7 @@ export interface DetailedLifetimeStats {
   chord: DetailedChordStats;
   interval: DetailedIntervalStats;
   progression: DetailedProgressionStats;
+  keyIdentification: DetailedKeyIdentificationStats;
   sessionHistory: {
     [sessionId: string]: DetailedSessionStats;
   };
@@ -254,10 +280,20 @@ export const DEFAULT_DETAILED_PROGRESSION_STATS: DetailedProgressionStats = {
   },
 };
 
+export const DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS: DetailedKeyIdentificationStats = {
+  ...DEFAULT_DETAILED_MODE_STATS,
+  keyBreakdown: {},
+  difficultyBreakdown: {
+    easy: { ...DEFAULT_CATEGORY_BREAKDOWN },
+    hard: { ...DEFAULT_CATEGORY_BREAKDOWN },
+  },
+};
+
 export const DEFAULT_LIFETIME_STATS: LifetimeStats = {
   chord: { ...DEFAULT_MODE_STATS },
   interval: { ...DEFAULT_MODE_STATS },
   progression: { ...DEFAULT_MODE_STATS },
+  keyIdentification: { ...DEFAULT_MODE_STATS },
 };
 
 export const DEFAULT_DETAILED_LIFETIME_STATS: DetailedLifetimeStats = {
@@ -265,5 +301,6 @@ export const DEFAULT_DETAILED_LIFETIME_STATS: DetailedLifetimeStats = {
   chord: { ...DEFAULT_DETAILED_CHORD_STATS },
   interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
   progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+  keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
   sessionHistory: {},
 };

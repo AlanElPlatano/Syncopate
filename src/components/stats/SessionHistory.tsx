@@ -60,6 +60,8 @@ export const SessionHistory = ({ stats, limit = 10 }: SessionHistoryProps) => {
         return '🎵';
       case 'progression':
         return '🎶';
+      case 'keyIdentification':
+        return '🔑';
       default:
         return '🎼';
     }
@@ -73,6 +75,8 @@ export const SessionHistory = ({ stats, limit = 10 }: SessionHistoryProps) => {
         return 'Interval';
       case 'progression':
         return 'Progression';
+      case 'keyIdentification':
+        return 'Key ID';
       default:
         return mode;
     }

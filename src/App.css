@@ -10,6 +10,30 @@
   margin-bottom: 3rem;
 }
 
+.back-button {
+  position: fixed;
+  left: 1.5rem;
+  top: 1.5rem;
+  background: rgba(99, 102, 241, 0.15);
+  border: 2px solid rgba(99, 102, 241, 0.3);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.back-button:hover {
+  background: rgba(99, 102, 241, 0.3);
+  border-color: var(--primary-color);
+  transform: translateX(-2px);
+}
+
 .app-title {
   font-size: 3rem;
   font-weight: 700;

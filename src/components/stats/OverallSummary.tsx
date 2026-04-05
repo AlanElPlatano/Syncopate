@@ -135,6 +135,26 @@ export const OverallSummary = ({ stats }: OverallSummaryProps) => {
               </div>
             </div>
           </div>
+
+          <div className="mode-card key-identification-mode">
+            <div className="mode-header">
+              <span className="mode-name">🔑 Key Identification</span>
+            </div>
+            <div className="mode-stats">
+              <div className="mode-stat">
+                <span className="mode-stat-label">Sessions</span>
+                <span className="mode-stat-value">{summary.byMode.keyIdentification.sessions}</span>
+              </div>
+              <div className="mode-stat">
+                <span className="mode-stat-label">Accuracy</span>
+                <span className="mode-stat-value">{summary.byMode.keyIdentification.accuracy}%</span>
+              </div>
+              <div className="mode-stat">
+                <span className="mode-stat-label">Time Spent</span>
+                <span className="mode-stat-value">{timeByMode.keyIdentification.formatted}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

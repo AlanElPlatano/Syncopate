@@ -10,6 +10,7 @@ import {
   DEFAULT_DETAILED_CHORD_STATS,
   DEFAULT_DETAILED_INTERVAL_STATS,
   DEFAULT_DETAILED_PROGRESSION_STATS,
+  DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS,
 } from '../types/stats';
 
 describe('storage.ts - LocalStorage Operations', () => {
@@ -31,6 +32,7 @@ describe('storage.ts - LocalStorage Operations', () => {
         chord: expect.any(Object),
         interval: expect.any(Object),
         progression: expect.any(Object),
+        keyIdentification: expect.any(Object),
         sessionHistory: {},
       });
       expect(stats.chord.totalSessions).toBe(0);
@@ -57,6 +59,7 @@ describe('storage.ts - LocalStorage Operations', () => {
         progression: {
           ...DEFAULT_DETAILED_PROGRESSION_STATS,
         },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 
@@ -146,6 +149,7 @@ describe('storage.ts - LocalStorage Operations', () => {
         progression: {
           ...DEFAULT_DETAILED_PROGRESSION_STATS,
         },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 
@@ -172,6 +176,7 @@ describe('storage.ts - LocalStorage Operations', () => {
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 
@@ -187,6 +192,7 @@ describe('storage.ts - LocalStorage Operations', () => {
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 
@@ -228,6 +234,7 @@ describe('storage.ts - LocalStorage Operations', () => {
         },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 

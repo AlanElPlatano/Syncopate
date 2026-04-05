@@ -4,41 +4,33 @@ import {
   getDiatonicChords,
   getNonDiatonicChords,
   getAllChords,
-  getRandomKey,
+  getRandomKeyByMode,
+  parseKey,
 } from '../audio/progressions';
+import { KeyMode } from '../types/screens';
 
-export interface ProgressionQuestion {
+export interface KeyIdentificationQuestion {
   key: string;
   progression: RomanNumeralChord[];
   chordNotes: string[][];
   bpm: number;
 }
 
-/**
- * Generate a random BPM within a reasonable range
- */
 function getRandomBpm(): number {
   return Math.floor(Math.random() * (120 - 80 + 1)) + 80;
 }
 
-/**
- * Generate a random progression based on configuration
- */
-export function generateProgressionQuestion(
+export function generateKeyIdentificationQuestion(
   difficulty: 'easy' | 'hard',
   chordPool: { diatonic: boolean; nonDiatonic: boolean },
-  key: string
-): ProgressionQuestion {
-  // Determine progression length based on difficulty
+  keyMode: KeyMode
+): KeyIdentificationQuestion {
   const minLength = difficulty === 'easy' ? 2 : 5;
   const maxLength = difficulty === 'easy' ? 4 : 8;
-  // Calculates a random length between minLength and maxLength inclusive
   const progressionLength = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
 
-  // Determine random key if needed
-  const selectedKey = key === 'random' ? getRandomKey() : key;
+  const selectedKey = getRandomKeyByMode(keyMode);
 
-  // Get available chords based on chord pool selection
   let availableChords: RomanNumeralChord[] = [];
 
   if (chordPool.diatonic && chordPool.nonDiatonic) {
@@ -53,27 +45,24 @@ export function generateProgressionQuestion(
     throw new Error('No chords available with current settings');
   }
 
-  // Generate progression
   const progression: RomanNumeralChord[] = [];
 
-  // Try to make progression end on tonic (I or i) for musical resolution
   for (let i = 0; i < progressionLength; i++) {
     const isLastChord = i === progressionLength - 1;
 
+    const previousChord = progression[progression.length - 1];
+
     if (isLastChord) {
-      // Try to end on tonic if available
       const tonic = availableChords.find(chord =>
-        chord.numeral === 'I' || chord.numeral === 'i'
+        (chord.numeral === 'I' || chord.numeral === 'i') &&
+        chord.numeral !== previousChord?.numeral
       );
       if (tonic) {
-        // Push tonic as last chord
         progression.push(tonic);
         continue;
       }
     }
 
-    // Pick random chord, avoiding consecutive duplicates
-    const previousChord = progression[progression.length - 1];
     const candidates = previousChord
       ? availableChords.filter(chord => chord.numeral !== previousChord.numeral)
       : availableChords;
@@ -83,7 +72,6 @@ export function generateProgressionQuestion(
     progression.push(pool[randomIndex]);
   }
 
-  // Convert progression to actual chord notes
   const chordNotes = progression.map(chord =>
     romanNumeralToChord(chord, selectedKey)
   );
@@ -96,33 +84,20 @@ export function generateProgressionQuestion(
   };
 }
 
-/**
- * Validate user's answer against the correct progression
- */
-export function validateProgressionAnswer(
-  question: ProgressionQuestion,
-  userAnswer: string[]
+export function validateKeyAnswer(
+  question: KeyIdentificationQuestion,
+  userAnswer: string
 ): boolean {
-  if (userAnswer.length !== question.progression.length) {
-    return false;
-  }
-
-  return userAnswer.every((answer, index) => {
-    const correctNumeral = question.progression[index].numeral;
-    return answer === correctNumeral;
-  });
+  const correct = parseKey(question.key);
+  const user = parseKey(userAnswer);
+  return correct.root === user.root && correct.mode === user.mode;
 }
 
-/**
- * Get the correct answer as an array of Roman numerals
- */
-export function getCorrectAnswer(question: ProgressionQuestion): string[] {
-  return question.progression.map(chord => chord.numeral);
+export function formatKeyDisplay(key: string): string {
+  const { root, mode } = parseKey(key);
+  return `${root} ${mode === 'major' ? 'Major' : 'Minor'}`;
 }
 
-/**
- * Calculate accuracy percentage
- */
 export function calculateAccuracy(
   correctAnswers: number,
   totalQuestions: number

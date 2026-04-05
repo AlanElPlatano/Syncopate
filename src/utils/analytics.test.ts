@@ -18,6 +18,7 @@ import {
   DEFAULT_DETAILED_CHORD_STATS,
   DEFAULT_DETAILED_INTERVAL_STATS,
   DEFAULT_DETAILED_PROGRESSION_STATS,
+  DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS,
 } from '../types/stats';
 
 describe('analytics.ts - Analytics Calculations', () => {
@@ -447,6 +448,7 @@ describe('analytics.ts - Analytics Calculations', () => {
           totalCorrect: 10,
           overallAccuracy: 50,
         },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 
@@ -479,6 +481,7 @@ describe('analytics.ts - Analytics Calculations', () => {
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 
@@ -508,6 +511,7 @@ describe('analytics.ts - Analytics Calculations', () => {
           totalQuestions: 10,
           totalCorrect: 2,
         },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 
@@ -526,6 +530,7 @@ describe('analytics.ts - Analytics Calculations', () => {
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {
           'session-1': {
             sessionId: 'session-1',
@@ -571,6 +576,7 @@ describe('analytics.ts - Analytics Calculations', () => {
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {
           'session-1': {
             sessionId: 'session-1',
@@ -615,6 +621,7 @@ describe('analytics.ts - Analytics Calculations', () => {
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 
@@ -633,6 +640,7 @@ describe('analytics.ts - Analytics Calculations', () => {
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {
           'session-1': {
             sessionId: 'session-1',
@@ -670,6 +678,7 @@ describe('analytics.ts - Analytics Calculations', () => {
           ...DEFAULT_DETAILED_PROGRESSION_STATS,
           totalQuestions: 0,
         },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {
           'session-1': {
             sessionId: 'session-1',
@@ -714,6 +723,7 @@ describe('analytics.ts - Analytics Calculations', () => {
         chord: { ...DEFAULT_DETAILED_CHORD_STATS },
         interval: { ...DEFAULT_DETAILED_INTERVAL_STATS },
         progression: { ...DEFAULT_DETAILED_PROGRESSION_STATS },
+        keyIdentification: { ...DEFAULT_DETAILED_KEY_IDENTIFICATION_STATS },
         sessionHistory: {},
       };
 

@@ -38,6 +38,8 @@ export const StatsScreen = () => {
         return 'Interval Training';
       case 'progression':
         return 'Chord Progression Training';
+      case 'keyIdentification':
+        return 'Key Identification Training';
       default:
         return 'Training';
     }

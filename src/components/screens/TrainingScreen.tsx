@@ -2,7 +2,8 @@ import { useApp } from '../../context/AppContext';
 import { ChordTraining } from '../modes/chord';
 import { IntervalTraining } from '../modes/interval';
 import { ProgressionTraining } from '../modes/progression';
-import { ChordTypeConfig, IntervalConfig, ProgressionConfig } from '../../types/screens';
+import { KeyIdentificationTraining } from '../modes/keyIdentification';
+import { ChordTypeConfig, IntervalConfig, ProgressionConfig, KeyIdentificationConfig } from '../../types/screens';
 import './TrainingScreen.css';
 
 export const TrainingScreen = () => {
@@ -25,6 +26,8 @@ export const TrainingScreen = () => {
         return <IntervalTraining config={sessionConfig as IntervalConfig} />;
       case 'progression':
         return <ProgressionTraining config={sessionConfig as ProgressionConfig} />;
+      case 'keyIdentification':
+        return <KeyIdentificationTraining config={sessionConfig as KeyIdentificationConfig} />;
       default:
         return <div className="training-placeholder">Unknown mode</div>;
     }
