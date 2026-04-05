@@ -56,6 +56,14 @@ const MAJOR_SCALE_DEGREES = [0, 2, 4, 5, 7, 9, 11];
 // Minor scale intervals (natural minor)
 const MINOR_SCALE_DEGREES = [0, 2, 3, 5, 7, 8, 10];
 
+const ENHARMONIC_TO_SHARP: Record<string, string> = {
+  'Db': 'C#', 'Eb': 'D#', 'Fb': 'E', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#', 'Cb': 'B',
+};
+
+export function toSharpRoot(root: string): string {
+  return ENHARMONIC_TO_SHARP[root] ?? root;
+}
+
 /**
  * Parse a key string into root note and mode
  * Examples: "C", "Cm", "F#", "Bbm"

@@ -50,9 +50,12 @@ export function generateKeyIdentificationQuestion(
   for (let i = 0; i < progressionLength; i++) {
     const isLastChord = i === progressionLength - 1;
 
+    const previousChord = progression[progression.length - 1];
+
     if (isLastChord) {
       const tonic = availableChords.find(chord =>
-        chord.numeral === 'I' || chord.numeral === 'i'
+        (chord.numeral === 'I' || chord.numeral === 'i') &&
+        chord.numeral !== previousChord?.numeral
       );
       if (tonic) {
         progression.push(tonic);
@@ -60,7 +63,6 @@ export function generateKeyIdentificationQuestion(
       }
     }
 
-    const previousChord = progression[progression.length - 1];
     const candidates = previousChord
       ? availableChords.filter(chord => chord.numeral !== previousChord.numeral)
       : availableChords;

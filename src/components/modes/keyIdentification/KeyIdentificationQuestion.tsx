@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAudio } from '../../../context/AudioContext';
 import { useApp } from '../../../context/AppContext';
 import { KeyIdentificationQuestion as KeyIdentificationQuestionType } from '../../../logic/keyIdentificationTraining';
-import { MAJOR_KEYS, MINOR_KEYS, parseKey } from '../../../audio/progressions';
+import { parseKey, toSharpRoot } from '../../../audio/progressions';
 import { QuestionControls } from '../../training/QuestionControls';
 import { InstrumentSelector } from '../../training/InstrumentSelector';
 import { FeedbackDisplay, FeedbackType } from '../../training/FeedbackDisplay';
@@ -19,9 +19,7 @@ interface KeyIdentificationQuestionProps {
   disabled?: boolean;
 }
 
-function getRootNotes(keys: string[]): string[] {
-  return keys.map(k => parseKey(k).root);
-}
+const SHARP_ROOTS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 export const KeyIdentificationQuestion = ({
   question,
@@ -39,9 +37,7 @@ export const KeyIdentificationQuestion = ({
   const [selectedRoot, setSelectedRoot] = useState('');
   const [selectedQuality, setSelectedQuality] = useState<'major' | 'minor'>('major');
 
-  const availableRoots = keyMode === 'minor'
-    ? getRootNotes(MINOR_KEYS)
-    : getRootNotes(MAJOR_KEYS);
+  const availableRoots = SHARP_ROOTS;
 
   const progressionDisplay = question.progression
     .map(chord => chord.label)
@@ -81,7 +77,7 @@ export const KeyIdentificationQuestion = ({
       : keyMode === 'minor' ? 'minor'
       : selectedQuality;
 
-    const isCorrect = correctKey.root === selectedRoot && correctKey.mode === quality;
+    const isCorrect = toSharpRoot(correctKey.root) === selectedRoot && correctKey.mode === quality;
 
     const userAnswerDisplay = `${selectedRoot} ${quality === 'major' ? 'Major' : 'Minor'}`;
 
